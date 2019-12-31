@@ -22,17 +22,13 @@ jobs:
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-    - name: Get release upload_url
-      id: release
-      run: |
-        echo -n '##[set-output name=upload_url;]'
-        curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds' | jq -r .upload_url
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release.outputs.upload_url }}
+        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds' | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22533032/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
