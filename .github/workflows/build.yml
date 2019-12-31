@@ -1,0 +1,38 @@
+name: Build Ruby for GitHub Actions
+on: [push]
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
+        ruby: [ 'ruby-2.6.5', 'ruby-2.7.0' ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Clone ruby-install
+      run: git clone https://github.com/postmodern/ruby-install.git
+    - name: Install ruby-install
+      run: sudo make install
+      working-directory: ./ruby-install
+
+    - name: List versions
+      run: ruby-install
+    - name: Build Ruby
+      run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+    - name: Get release upload_url
+      id: release
+      run: |
+        echo -n '##[set-output name=upload_url;]'
+        curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds' | jq -r .upload_url
+    - name: Upload Built Ruby
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.release.outputs.upload_url }}
+        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_content_type: application/gzip
