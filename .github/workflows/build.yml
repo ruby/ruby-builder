@@ -6,9 +6,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
-        ruby: [ 'jruby-9.2.9.0' ]
+        ruby: [ 'ruby-2.4.9', 'ruby-2.5.7', 'ruby-2.6.5', 'ruby-2.7.0', 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
     runs-on: ${{ matrix.os }}
     steps:
+    - name: Check if already built
+      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/builds/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+
     - name: Clone ruby-install
       run: git clone https://github.com/postmodern/ruby-install.git
     - name: Install ruby-install
