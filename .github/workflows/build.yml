@@ -22,6 +22,8 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
     - name: Build Ruby
       run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+    - name: Basic test
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
