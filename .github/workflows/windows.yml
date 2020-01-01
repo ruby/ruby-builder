@@ -1,35 +1,30 @@
-name: Build Ruby for GitHub Actions
+name: Build Ruby for GitHub Actions (Windows)
 on: [push]
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
-        ruby: [ 'ruby-2.4.9', 'ruby-2.5.7', 'ruby-2.6.5', 'ruby-2.7.0', 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
+        os: [ 'windows-latest' ]
+        ruby: [ 'ruby-2.7.0' ]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/builds/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-
     - name: Clone ruby-install
       run: git clone https://github.com/postmodern/ruby-install.git
-    - name: Install ruby-install
-      run: sudo make install
-      working-directory: ./ruby-install
 
     - name: List versions
-      run: ruby-install
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
+      run: ./ruby-install/bin/ruby-install
+      shell: bash
     - name: Build Ruby
-      run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+      run: ./ruby-install/bin/ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+      shell: bash
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+      shell: bash
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      shell: bash
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
