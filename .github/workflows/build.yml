@@ -6,7 +6,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
-        ruby: [ 'ruby-2.4.9', 'ruby-2.5.7' ]
+        ruby: [ 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Clone ruby-install
