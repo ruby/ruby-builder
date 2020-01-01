@@ -6,7 +6,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
-        ruby: [ 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
+        ruby: [ 'jruby-9.2.9.0' ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Clone ruby-install
@@ -17,6 +17,9 @@ jobs:
 
     - name: List versions
       run: ruby-install
+    - name: apt-get update on Ubuntu
+      run: sudo apt-get update
+      if: startsWith(matrix.os, 'ubuntu')
     - name: Build Ruby
       run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
 
