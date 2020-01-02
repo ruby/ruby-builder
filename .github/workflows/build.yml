@@ -1,26 +1,21 @@
 name: Build Ruby for GitHub Actions
-on: [push]
+on:
+  push:
+    tags:
+    - 'builds-*'
 jobs:
   release:
     name: Create GitHub Release
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Create tag
-      id: create_tag
-      run: |
-        tag=builds-`date +%Y%m%d-%H%M%S`
-        git tag $tag
-        git push origin $tag
-        echo "::set-output name=tag::$tag"
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ steps.create_tag.outputs.tag }}
-        release_name: ${{ steps.create_tag.outputs.tag }}
+        tag_name: ${{ github.ref }}
+        release_name: ${{ github.ref }}
         draft: true
         prerelease: false
     - name: Create upload_url.txt file
