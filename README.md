@@ -7,3 +7,5 @@ The action to use the prebuilt rubies is https://github.com/eregon/use-ruby-acti
 https://github.com/eregon/ruby-install-builder/releases/tag/builds contains all built Rubies.
 
 https://github.com/eregon/ruby-install-builder/blob/metadata/versions.json is the list of currently available versions.
+
+`bundler` is installed for all Rubies which do not ship it already

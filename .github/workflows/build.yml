@@ -25,6 +25,12 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
     - name: Build Ruby
       run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+    - name: Install Bundler if needed
+      run: |
+        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
+          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+          gem install bundler --no-document
+        fi
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
 
