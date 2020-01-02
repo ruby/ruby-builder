@@ -16,7 +16,7 @@ jobs:
       with:
         tag_name: ${{ github.ref }}
         release_name: ${{ github.ref }}
-        draft: true
+        draft: false
         prerelease: false
     - name: Create upload_url.txt file
       run: echo "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
@@ -76,3 +76,19 @@ jobs:
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
+
+  metadata:
+    name: Update metadata about the last release
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        ref: metadata
+        fetch-depth: 0
+    - run: |
+        echo $(basename ${{ github.ref }}) > latest_release.tag
+        git config user.name "GitHub Actions"
+        git config user.email automated@automated.org
+        git commit -a -m 'Update latest_release.tag'
+        git push
