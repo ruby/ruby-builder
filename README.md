@@ -4,7 +4,7 @@ A repository building rubies with [ruby-install](https://github.com/postmodern/r
 
 The action to use the prebuilt rubies is https://github.com/eregon/use-ruby-action
 
-https://github.com/eregon/ruby-install-builder/releases/tag/builds contains all built Rubies.
+https://github.com/eregon/ruby-install-builder/releases/latest contains all built Rubies.
 
 https://github.com/eregon/ruby-install-builder/blob/metadata/versions.json is the list of currently available versions.
 
