@@ -1,7 +1,37 @@
 name: Build Ruby for GitHub Actions
 on: [push]
 jobs:
+  release:
+    name: Create GitHub Release
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: Create tag
+      id: create_tag
+      run: |
+        tag=builds-`date +%Y%m%d-%H%M%S`
+        git tag $tag
+        git push origin $tag
+        echo "::set-output name=tag::$tag"
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ steps.create_tag.outputs.tag }}
+        release_name: ${{ steps.create_tag.outputs.tag }}
+        draft: true
+        prerelease: false
+    - name: Create upload_url.txt file
+      run: echo "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
+    - uses: actions/upload-artifact@v1
+      with:
+        name: upload_url
+        path: upload_url.txt
+
   build:
+    needs: [release]
     strategy:
       fail-fast: false
       matrix:
@@ -9,8 +39,14 @@ jobs:
         ruby: [ 'ruby-2.4.9', 'ruby-2.5.7', 'ruby-2.6.5', 'ruby-2.7.0', 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
     runs-on: ${{ matrix.os }}
     steps:
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/builds/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+    - uses: actions/download-artifact@v1
+      with:
+        name: upload_url
+    - name: Set upload_url
+      id: release_info
+      run: |
+        upload_url=`cat upload_url/upload_url.txt`
+        echo "::set-output name=upload_url::$upload_url"
 
     - name: Clone ruby-install
       run: git clone https://github.com/postmodern/ruby-install.git
@@ -41,8 +77,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds' | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22533032/assets{?name,label}'
+        upload_url: ${{ steps.release_info.outputs.upload_url }}
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
