@@ -19,7 +19,7 @@ jobs:
 
     - name: Build Ruby
       # TODO: fix version
-      run: ruby-build 2.3.8 $HOME/.rubies/${{ matrix.ruby }}
+      run: ruby-build --verbose 2.3.8 $HOME/.rubies/${{ matrix.ruby }}
       env:
         RUBY_CONFIGURE_OPTS: --disable-install-doc
     - name: Install Bundler if needed
