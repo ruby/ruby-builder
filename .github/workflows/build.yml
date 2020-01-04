@@ -51,6 +51,8 @@ jobs:
 
     - name: List versions
       run: ruby-install
+    - run: openssl version
+
     - name: apt-get update on Ubuntu
       run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
@@ -62,8 +64,11 @@ jobs:
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler --no-document
         fi
+
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+    - name: OpenSSL test
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
