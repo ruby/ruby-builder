@@ -5,7 +5,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
+        os: [ 'ubuntu-18.04' ]
         ruby: [ 'ruby-2.3.8' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -22,8 +22,12 @@ jobs:
     - name: apt-get update on Ubuntu
       run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
+    - run: sudo apt-get install -y libssl1.0-dev
+    - run: sudo apt-get install -y bison libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
+    - run: openssl version
+
     - name: Build Ruby
-      run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+      run: ruby-install --no-install-deps ${{ matrix.ruby }} -- --disable-install-doc
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
