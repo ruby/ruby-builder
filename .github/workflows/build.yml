@@ -10,7 +10,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Clone ruby-build
-      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+      run: git clone https://github.com/rbenv/ruby-build.git
+      # run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
