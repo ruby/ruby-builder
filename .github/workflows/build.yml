@@ -5,7 +5,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-18.04' ]
+        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
         ruby: [ 'ruby-2.3.8' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -22,8 +22,14 @@ jobs:
     - name: apt-get update on Ubuntu
       run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
+    - run: sudo apt-get install -y libssl-dev
+      if: matrix.os == 'ubuntu-16.04' && startsWith(matrix.ruby, 'ruby-2.3')
     - run: sudo apt-get install -y libssl1.0-dev
+      if: matrix.os == 'ubuntu-18.04' && startsWith(matrix.ruby, 'ruby-2.3')
+    - run: brew install https://raw.githubusercontent.com/Homebrew/homebrew-core/64555220bfbf4a25598523c2e4d3a232560eaad7/Formula/openssl.rb -f
+      if: startsWith(matrix.os, 'macos') && startsWith(matrix.ruby, 'ruby-2.3')
     - run: sudo apt-get install -y bison libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
+      if: startsWith(matrix.os, 'ubuntu')
     - run: openssl version
 
     - name: Build Ruby
