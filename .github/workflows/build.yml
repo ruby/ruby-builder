@@ -30,8 +30,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
-        ruby: [ 'ruby-2.4.9', 'ruby-2.5.7', 'ruby-2.6.5', 'ruby-2.7.0', 'truffleruby-19.3.0', 'jruby-9.2.9.0' ]
+        os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
+        ruby: [ ruby-2.4.9, ruby-2.5.7, ruby-2.6.5, ruby-2.7.0, truffleruby-19.3.0, jruby-9.2.9.0 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/download-artifact@v1
