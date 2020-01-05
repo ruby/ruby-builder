@@ -60,7 +60,7 @@ jobs:
         7z x $env:GITHUB_WORKSPACE\${{ matrix.ruby }}-${{ matrix.os }}\${{ matrix.ruby }}-${{ matrix.os }}.7z -oC:\
 
     - run: ls C:/Ruby26
-    - run: echo "::add-path::C:/Ruby26"
+    - run: echo "::add-path::C:/Ruby26/bin"
 
     - name: Basic test
       run: ruby --version
