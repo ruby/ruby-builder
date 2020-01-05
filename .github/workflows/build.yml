@@ -22,6 +22,8 @@ jobs:
     #       gem install bundler --no-document
     #     fi
 
+    - run: C:/Ruby26/bin/ridk version
+
     - name: Basic test
       run: C:/Ruby26/bin/ruby --version
     - name: OpenSSL test
