@@ -28,3 +28,7 @@ jobs:
     - name: Create archive
       run: |
         tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C C:/ Ruby26
+
+    # After creating the archive to avoid the side effect
+    - name: C extension test
+      run: gem install json --no-document
