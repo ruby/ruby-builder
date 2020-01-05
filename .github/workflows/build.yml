@@ -36,12 +36,13 @@ jobs:
 
     - name: Create archive
       run: |
-        tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C C:/ Ruby26
+        7z a $env:GITHUB_WORKSPACE\${{ matrix.ruby }}-${{ matrix.os }}.7z Ruby26
+      working-directory: C:/
 
     - uses: actions/upload-artifact@v1
       with:
         name: ${{ matrix.ruby }}-${{ matrix.os }}
-        path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        path: ${{ matrix.ruby }}-${{ matrix.os }}.7z
 
   test:
     needs: [build]
@@ -56,8 +57,7 @@ jobs:
         name: ${{ matrix.ruby }}-${{ matrix.os }}
 
     - run: |
-        tar xf d:/a/ruby-install-builder/ruby-install-builder/${{ matrix.ruby }}-${{ matrix.os }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-      working-directory: C:/
+        7z x $env:GITHUB_WORKSPACE\${{ matrix.ruby }}-${{ matrix.os }}\${{ matrix.ruby }}-${{ matrix.os }}.7z -oC:\
 
     - run: ls C:/Ruby26
     - run: echo "::add-path::C:/Ruby26"
