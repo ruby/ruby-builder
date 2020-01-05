@@ -5,7 +5,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ 'ubuntu-16.04', 'ubuntu-18.04', 'macos-latest' ]
+        os: [ 'ubuntu-16.04' ]
         ruby: [ 'ruby-2.3.8' ]
     runs-on: ${{ matrix.os }}
     steps:
@@ -15,8 +15,10 @@ jobs:
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
-    - name: List versions
+    - &list
+      name: List versions
       run: ruby-build --definitions
+    - *list
 
     - name: apt-get update on Ubuntu
       run: sudo apt-get update
@@ -39,8 +41,10 @@ jobs:
 
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
-    - name: OpenSSL test
+    - &openssl
+      name: OpenSSL test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
+    - *openssl
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
