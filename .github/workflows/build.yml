@@ -23,6 +23,9 @@ jobs:
     #     fi
 
     - run: C:/Ruby26/bin/ridk version
+    - run: |
+        C:/Ruby26/bin/ridk enable
+        C:/Ruby26/bin/ridk version
 
     - name: Basic test
       run: C:/Ruby26/bin/ruby --version
