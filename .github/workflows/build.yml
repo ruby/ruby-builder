@@ -9,6 +9,8 @@ jobs:
         ruby: [ 'ruby-2.6.5' ]
     runs-on: ${{ matrix.os }}
     steps:
+    - run: ls C:/Ruby26
+
     - run: |
         $(new-object net.webclient).DownloadFile("https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.6.5-1/rubyinstaller-2.6.5-1-x64.exe", "$pwd/ruby-setup.exe")
     - run: cmd /c ruby-setup.exe /verysilent /dir=C:/Ruby26
