@@ -39,3 +39,8 @@ jobs:
     # After creating the archive to avoid the side effect
     - name: C extension test
       run: gem install json --no-document
+
+    - uses: actions/upload-artifact@v1
+      with:
+        name: ${{ matrix.ruby }}-${{ matrix.os }}
+        path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
