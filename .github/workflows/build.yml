@@ -67,3 +67,6 @@ jobs:
       run: ruby -ropen-uri -e 'puts open(%{https://rubygems.org/}) { |f| f.read(2014) }'
     - name: C extension test
       run: gem install json --no-document
+
+    - run: which bundle
+    - run: bundle --version
