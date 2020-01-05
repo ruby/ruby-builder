@@ -56,7 +56,8 @@ jobs:
         name: ${{ matrix.ruby }}-${{ matrix.os }}
 
     - run: |
-        tar xf ${{ matrix.ruby }}-${{ matrix.os }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C C:/
+        tar xf d:/a/ruby-install-builder/ruby-install-builder/${{ matrix.ruby }}-${{ matrix.os }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+      working-directory: C:/
 
     - run: ls C:/Ruby26
     - run: echo "::add-path::C:/Ruby26"
