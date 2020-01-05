@@ -10,13 +10,20 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - name: Clone ruby-build
-      run: git clone https://github.com/rbenv/ruby-build.git
-      # run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+      # run: git clone https://github.com/rbenv/ruby-build.git
+      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
     - name: List versions
       run: ruby-build --definitions
+
+    - name: apt-get update on Ubuntu
+      run: sudo apt-get update
+      if: startsWith(matrix.os, 'ubuntu')
+    # bison libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
+    - run: sudo apt-get install -y libgdbm-dev libreadline-dev
+      if: startsWith(matrix.os, 'ubuntu')
 
     - name: Build Ruby
       # TODO: fix version
