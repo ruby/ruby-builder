@@ -12,6 +12,8 @@ jobs:
     - run: ls C:/
     - run: echo $env:PATH
     - run: ruby --version
+    - run: ruby -e 'p ENV[%{PATH}]'
+    - run: false
 
     - run: |
         $(new-object net.webclient).DownloadFile("https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.6.5-1/rubyinstaller-devkit-2.6.5-1-x64.exe", "$pwd/ruby-setup.exe")
