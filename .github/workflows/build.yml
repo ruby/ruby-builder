@@ -1,118 +1,16 @@
-name: Build Ruby for GitHub Actions
+name: Test
 on: [push]
 jobs:
-  # Build stable releases
   build:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ ruby-2.4.9, ruby-2.5.7, ruby-2.6.5, ruby-2.7.0, truffleruby-19.3.0, jruby-9.2.9.0 ]
-    runs-on: ${{ matrix.os }}
+    runs-on: ubuntu-latest
     steps:
-    - name: Set tag name
-      id: info
-      run: |
-        tag=builds-bundler1
-        echo "::set-output name=tag::$tag"
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-
-    - name: Clone ruby-install
-      run: git clone https://github.com/postmodern/ruby-install.git
-    - name: Install ruby-install
-      run: sudo make install
-      working-directory: ./ruby-install
-
-    - name: List versions
-      run: ruby-install
-
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
-    - name: Build Ruby
-      run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
-    - name: Install Bundler if needed
-      run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-          gem install bundler -v '~> 1' --no-document
-        fi
-
-    - name: Basic test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
-    - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
-
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-    - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_content_type: application/gzip
-
-  # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
-  # To workaround that, we use ruby-build which builds its own OpenSSL.
-  build23:
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ ruby-2.3.8 ]
-        ruby-version: [ 2.3.8 ]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - name: Set tag name
-      id: info
-      run: |
-        tag=builds-bundler1
-        echo "::set-output name=tag::$tag"
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-
-    - name: Clone ruby-build
-      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
-    - name: Install ruby-build
-      run: sudo ./ruby-build/install.sh
-
-    - name: List versions
-      run: ruby-build --definitions
-
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
-    - run: sudo apt-get install -y libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
-      if: startsWith(matrix.os, 'ubuntu')
-
-    - name: Build Ruby
-      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/${{ matrix.ruby }}
-      env:
-        RUBY_CONFIGURE_OPTS: --disable-install-doc
-    - name: Install Bundler if needed
-      run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-          gem install bundler --no-document
-        fi
-
-    - name: Basic test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
-    - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
-
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-    - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_content_type: application/gzip
+    - run: env
+    - run: wget 'https://repo1.maven.org/maven2/org/jruby/jruby-dist/9.2.9.0/jruby-dist-9.2.9.0-bin.tar.gz'
+    - run: tar xf jruby-dist-9.2.9.0-bin.tar.gz
+    - run: ls
+    - run: jruby-9.2.9.0/bin/jruby --version
+    - run: echo "::add-path::$PWD/jruby-9.2.9.0/bin"
+    - run: jruby --version
+    - run: jruby -ryaml -e 'p YAML'
+    - run: gem env
+    - run: gem install bundler
