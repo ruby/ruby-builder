@@ -3,6 +3,8 @@ on: [push]
 jobs:
   # Build stable releases
   build:
+    env: # https://github.com/jruby/jruby/issues/6023
+      CLASSPATH: ""
     strategy:
       fail-fast: false
       matrix:
