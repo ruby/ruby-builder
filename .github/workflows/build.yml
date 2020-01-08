@@ -3,14 +3,14 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     env: # https://github.com/jruby/jruby/issues/6023
       CLASSPATH: ""
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ ruby-2.5.0, ruby-2.5.1, ruby-2.5.2, ruby-2.5.3, ruby-2.5.4, ruby-2.5.5, ruby-2.5.6 ]
+        ruby: [ ruby-2.5.2 ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
@@ -33,6 +33,10 @@ jobs:
     - name: apt-get update on Ubuntu
       run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
+    - name: Install system ruby for ruby-2.5.2
+      run: sudo apt-get install ruby
+      if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
+
     - name: Build Ruby
       run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
     - name: Install Bundler if needed
@@ -62,6 +66,7 @@ jobs:
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
+    if: false
     strategy:
       fail-fast: false
       matrix:
