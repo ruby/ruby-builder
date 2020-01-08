@@ -2,6 +2,8 @@ name: Test
 on: [push]
 jobs:
   build:
+    env:
+      CLASSPATH: ""
     runs-on: ubuntu-latest
     steps:
     - run: env
