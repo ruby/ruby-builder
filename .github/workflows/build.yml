@@ -61,7 +61,7 @@ jobs:
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-          gem install bundler --no-document
+          gem install bundler -v '~> 1' --no-document
         fi
 
     - name: Basic test
