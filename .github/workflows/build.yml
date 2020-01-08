@@ -3,6 +3,7 @@ on: [push]
 jobs:
   # Build stable releases
   build:
+    if: false
     env: # https://github.com/jruby/jruby/issues/6023
       CLASSPATH: ""
     strategy:
@@ -61,7 +62,6 @@ jobs:
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -100,7 +100,7 @@ jobs:
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-          gem install bundler --no-document
+          gem install bundler -v '~> 1' --no-document
         fi
 
     - name: Basic test
