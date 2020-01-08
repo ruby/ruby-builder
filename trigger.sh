@@ -1,4 +1,4 @@
 #!/bin/sh
-tag=builds-$(date +%Y%m%d-%H%M%S)
+tag=builds-with-bundler
 git tag "$tag"
 git push origin "$tag"
