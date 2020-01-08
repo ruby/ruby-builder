@@ -17,11 +17,6 @@ jobs:
         echo "::set-output name=tag::$tag"
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-    - name: Set upload_url
-      id: release_info
-      run: |
-        upload_url=$(curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/${{ steps.info.outputs.tag }}' | jq -r .upload_url)
-        echo "::set-output name=upload_url::$upload_url"
 
     - name: Clone ruby-install
       run: git clone https://github.com/postmodern/ruby-install.git
@@ -56,7 +51,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release_info.outputs.upload_url }}
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
@@ -79,11 +74,6 @@ jobs:
         echo "::set-output name=tag::$tag"
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-    - name: Set upload_url
-      id: release_info
-      run: |
-        upload_url=$(curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/${{ steps.info.outputs.tag }}' | jq -r .upload_url)
-        echo "::set-output name=upload_url::$upload_url"
 
     - name: Clone ruby-build
       run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
@@ -122,7 +112,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: ${{ steps.release_info.outputs.upload_url }}
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
