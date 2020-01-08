@@ -5,3 +5,6 @@ jobs:
     runs-on: macos-latest
     steps:
     - run: jq --version
+    - run: curl --version
+    - run: curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds-bundler1'
+    - run: curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/builds-bundler1' | jq -r .upload_url
