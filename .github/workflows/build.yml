@@ -3,7 +3,7 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     env: # https://github.com/jruby/jruby/issues/6023
       CLASSPATH: ""
     strategy:
@@ -66,13 +66,12 @@ jobs:
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ ruby-2.3.8 ]
-        ruby-version: [ 2.3.8 ]
+        ruby-version: [ 2.3.0, 2.3.1, 2.3.2, 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.3.7 ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
@@ -81,7 +80,7 @@ jobs:
         tag=builds-bundler1
         echo "::set-output name=tag::$tag"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
 
     - name: Clone ruby-build
       run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
@@ -98,29 +97,29 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
 
     - name: Build Ruby
-      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/${{ matrix.ruby }}
+      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/ruby-${{ matrix.ruby-version }}
       env:
         RUBY_CONFIGURE_OPTS: --disable-install-doc
     - name: Install Bundler if needed
       run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+        if [ ! -e ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
+          export PATH="$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
 
     - name: Basic test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby --version
     - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
+      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
 
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_path: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
+        asset_name: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
