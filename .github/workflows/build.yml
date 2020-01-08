@@ -1,46 +1,26 @@
 name: Build Ruby for GitHub Actions
-on:
-  push:
-    tags:
-    - 'builds-*'
+on: [push]
 jobs:
-  release:
-    name: Create GitHub Release
-    runs-on: ubuntu-latest
-    steps:
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        tag_name: ${{ github.ref }}
-        release_name: ${{ github.ref }}
-        draft: false
-        prerelease: false
-    - name: Create upload_url.txt file
-      run: echo "${{ steps.create_release.outputs.upload_url }}" > upload_url.txt
-    - uses: actions/upload-artifact@v1
-      with:
-        name: upload_url
-        path: upload_url.txt
-
   # Build stable releases
   build:
-    needs: [release]
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
         ruby: [ ruby-2.4.9, ruby-2.5.7, ruby-2.6.5, ruby-2.7.0, truffleruby-19.3.0, jruby-9.2.9.0 ]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/download-artifact@v1
-      with:
-        name: upload_url
+    - name: Set tag name
+      id: info
+      run: |
+        tag=builds-bundler1
+        echo "::set-output name=tag::$tag"
+    - name: Check if already built
+      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
     - name: Set upload_url
       id: release_info
       run: |
-        upload_url=`cat upload_url/upload_url.txt`
+        upload_url=$(curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/${{ steps.info.outputs.tag }}' | jq -r .upload_url)
         echo "::set-output name=upload_url::$upload_url"
 
     - name: Clone ruby-install
@@ -84,21 +64,25 @@ jobs:
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    needs: [release]
     strategy:
+      fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
         ruby: [ ruby-2.3.8 ]
         ruby-version: [ 2.3.8 ]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/download-artifact@v1
-      with:
-        name: upload_url
+    - name: Set tag name
+      id: info
+      run: |
+        tag=builds-bundler1
+        echo "::set-output name=tag::$tag"
+    - name: Check if already built
+      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
     - name: Set upload_url
       id: release_info
       run: |
-        upload_url=`cat upload_url/upload_url.txt`
+        upload_url=$(curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/${{ steps.info.outputs.tag }}' | jq -r .upload_url)
         echo "::set-output name=upload_url::$upload_url"
 
     - name: Clone ruby-build
@@ -142,19 +126,3 @@ jobs:
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
-
-  metadata:
-    name: Update metadata about the last release
-    needs: [build, build23]
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v2
-      with:
-        ref: metadata
-        fetch-depth: 0
-    - run: |
-        echo $(basename ${{ github.ref }}) > latest_release.tag
-        git config user.name "GitHub Actions"
-        git config user.email automated@automated.org
-        git commit -a -m 'Update latest_release.tag'
-        git push
