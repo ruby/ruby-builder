@@ -1,0 +1,898 @@
+name: Copy assets between releases
+on: [push]
+jobs:
+  copy:
+    if: true
+    runs-on: ubuntu-latest
+    steps:
+    - name: Download ruby-2.4.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.0-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.0-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.0-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.0-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.0-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.0-macos-latest.tar.gz
+        asset_name: ruby-2.4.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.1-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.1-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.1-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.1-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.1-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.1-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.1-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.1-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.1-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.1-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.1-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.1-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.1-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.1-macos-latest.tar.gz
+        asset_name: ruby-2.4.1-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.2-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.2-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.2-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.2-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.2-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.2-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.2-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.2-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.2-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.2-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.2-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.2-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.2-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.2-macos-latest.tar.gz
+        asset_name: ruby-2.4.2-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.3-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.3-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.3-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.3-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.3-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.3-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.3-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.3-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.3-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.3-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.3-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.3-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.3-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.3-macos-latest.tar.gz
+        asset_name: ruby-2.4.3-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.4-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.4-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.4-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.4-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.4-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.4-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.4-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.4-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.4-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.4-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.4-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.4-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.4-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.4-macos-latest.tar.gz
+        asset_name: ruby-2.4.4-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.5-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.5-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.5-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.5-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.5-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.5-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.5-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.5-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.5-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.5-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.5-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.5-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.5-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.5-macos-latest.tar.gz
+        asset_name: ruby-2.4.5-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.6-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.6-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.6-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.6-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.6-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.6-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.6-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.6-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.6-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.6-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.6-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.6-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.6-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.6-macos-latest.tar.gz
+        asset_name: ruby-2.4.6-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.7-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.7-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.7-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.7-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.7-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.7-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.7-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.7-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.7-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.7-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.7-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.7-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.7-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.7-macos-latest.tar.gz
+        asset_name: ruby-2.4.7-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.9-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.9-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.4.9-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.9-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.4.9-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.9-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.9-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.4.9-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.9-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.4.9-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.4.9-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.4.9-macos-latest.tar.gz'
+    - name: Upload ruby-2.4.9-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.4.9-macos-latest.tar.gz
+        asset_name: ruby-2.4.9-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.0-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.0-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.0-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.0-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.0-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.0-macos-latest.tar.gz
+        asset_name: ruby-2.5.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.1-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.1-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.1-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.1-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.1-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.1-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.1-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.1-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.1-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.1-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.1-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.1-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.1-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.1-macos-latest.tar.gz
+        asset_name: ruby-2.5.1-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.2-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.2-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.2-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.2-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.2-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.2-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.2-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.2-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.2-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.2-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.2-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.2-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.2-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.2-macos-latest.tar.gz
+        asset_name: ruby-2.5.2-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.3-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.3-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.3-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.3-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.3-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.3-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.3-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.3-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.3-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.3-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.3-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.3-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.3-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.3-macos-latest.tar.gz
+        asset_name: ruby-2.5.3-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.4-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.4-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.4-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.4-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.4-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.4-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.4-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.4-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.4-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.4-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.4-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.4-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.4-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.4-macos-latest.tar.gz
+        asset_name: ruby-2.5.4-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.5-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.5-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.5-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.5-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.5-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.5-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.5-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.5-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.5-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.5-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.5-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.5-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.5-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.5-macos-latest.tar.gz
+        asset_name: ruby-2.5.5-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.6-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.6-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.6-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.6-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.6-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.6-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.6-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.6-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.6-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.6-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.6-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.6-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.6-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.6-macos-latest.tar.gz
+        asset_name: ruby-2.5.6-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.7-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.7-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.5.7-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.7-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.5.7-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.7-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.7-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.5.7-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.7-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.5.7-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.5.7-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.5.7-macos-latest.tar.gz'
+    - name: Upload ruby-2.5.7-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.5.7-macos-latest.tar.gz
+        asset_name: ruby-2.5.7-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.0-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.0-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.0-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.0-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.0-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.0-macos-latest.tar.gz
+        asset_name: ruby-2.6.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.1-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.1-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.1-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.1-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.1-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.1-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.1-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.1-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.1-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.1-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.1-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.1-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.1-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.1-macos-latest.tar.gz
+        asset_name: ruby-2.6.1-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.2-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.2-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.2-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.2-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.2-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.2-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.2-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.2-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.2-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.2-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.2-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.2-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.2-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.2-macos-latest.tar.gz
+        asset_name: ruby-2.6.2-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.3-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.3-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.3-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.3-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.3-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.3-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.3-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.3-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.3-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.3-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.3-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.3-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.3-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.3-macos-latest.tar.gz
+        asset_name: ruby-2.6.3-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.4-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.4-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.4-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.4-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.4-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.4-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.4-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.4-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.4-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.4-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.4-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.4-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.4-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.4-macos-latest.tar.gz
+        asset_name: ruby-2.6.4-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.5-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.5-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.6.5-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.5-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.6.5-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.5-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.5-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.6.5-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.5-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.6.5-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.6.5-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.6.5-macos-latest.tar.gz'
+    - name: Upload ruby-2.6.5-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.6.5-macos-latest.tar.gz
+        asset_name: ruby-2.6.5-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.7.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.7.0-ubuntu-16.04.tar.gz'
+    - name: Upload ruby-2.7.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.7.0-ubuntu-16.04.tar.gz
+        asset_name: ruby-2.7.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.7.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.7.0-ubuntu-18.04.tar.gz'
+    - name: Upload ruby-2.7.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.7.0-ubuntu-18.04.tar.gz
+        asset_name: ruby-2.7.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download ruby-2.7.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/ruby-2.7.0-macos-latest.tar.gz'
+    - name: Upload ruby-2.7.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ruby-2.7.0-macos-latest.tar.gz
+        asset_name: ruby-2.7.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download jruby-9.2.9.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/jruby-9.2.9.0-ubuntu-16.04.tar.gz'
+    - name: Upload jruby-9.2.9.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: jruby-9.2.9.0-ubuntu-16.04.tar.gz
+        asset_name: jruby-9.2.9.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download jruby-9.2.9.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/jruby-9.2.9.0-ubuntu-18.04.tar.gz'
+    - name: Upload jruby-9.2.9.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: jruby-9.2.9.0-ubuntu-18.04.tar.gz
+        asset_name: jruby-9.2.9.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download jruby-9.2.9.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/jruby-9.2.9.0-macos-latest.tar.gz'
+    - name: Upload jruby-9.2.9.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: jruby-9.2.9.0-macos-latest.tar.gz
+        asset_name: jruby-9.2.9.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.0-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.0-ubuntu-16.04.tar.gz'
+    - name: Upload truffleruby-19.3.0-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.0-ubuntu-16.04.tar.gz
+        asset_name: truffleruby-19.3.0-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.0-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.0-ubuntu-18.04.tar.gz'
+    - name: Upload truffleruby-19.3.0-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.0-ubuntu-18.04.tar.gz
+        asset_name: truffleruby-19.3.0-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.0-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.0-macos-latest.tar.gz'
+    - name: Upload truffleruby-19.3.0-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.0-macos-latest.tar.gz
+        asset_name: truffleruby-19.3.0-macos-latest.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.1-ubuntu-16.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.1-ubuntu-16.04.tar.gz'
+    - name: Upload truffleruby-19.3.1-ubuntu-16.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.1-ubuntu-16.04.tar.gz
+        asset_name: truffleruby-19.3.1-ubuntu-16.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.1-ubuntu-18.04
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.1-ubuntu-18.04.tar.gz'
+    - name: Upload truffleruby-19.3.1-ubuntu-18.04
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.1-ubuntu-18.04.tar.gz
+        asset_name: truffleruby-19.3.1-ubuntu-18.04.tar.gz
+        asset_content_type: application/gzip
+    - name: Download truffleruby-19.3.1-macos-latest
+      run: wget 'https://github.com/eregon/ruby-install-builder/releases/download/builds-bundler1/truffleruby-19.3.1-macos-latest.tar.gz'
+    - name: Upload truffleruby-19.3.1-macos-latest
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: truffleruby-19.3.1-macos-latest.tar.gz
+        asset_name: truffleruby-19.3.1-macos-latest.tar.gz
+        asset_content_type: application/gzip
