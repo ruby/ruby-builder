@@ -4,8 +4,6 @@ jobs:
   # Build stable releases
   build:
     if: false
-    env: # https://github.com/jruby/jruby/issues/6023
-      CLASSPATH: ""
     strategy:
       fail-fast: false
       matrix:
