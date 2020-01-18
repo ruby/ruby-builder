@@ -3,7 +3,7 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     env: # https://github.com/jruby/jruby/issues/6023
       CLASSPATH: ""
     strategy:
@@ -49,7 +49,7 @@ jobs:
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
     - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
@@ -110,7 +110,7 @@ jobs:
     - name: Basic test
       run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby --version
     - name: OpenSSL test
-      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(2014) }'
+      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
 
     - name: Create archive
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
