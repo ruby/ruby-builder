@@ -14,7 +14,7 @@ jobs:
     - name: Set tag name
       id: info
       run: |
-        tag=builds-bundler1
+        tag=builds-newer-openssl
         echo "::set-output name=tag::$tag"
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
@@ -56,7 +56,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
+        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/$TAG' | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
@@ -75,7 +76,7 @@ jobs:
     - name: Set tag name
       id: info
       run: |
-        tag=builds-bundler1
+        tag=builds-newer-openssl
         echo "::set-output name=tag::$tag"
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
@@ -117,7 +118,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22689538/assets{?name,label}'
+        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/$TAG' | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
         asset_path: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_name: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
