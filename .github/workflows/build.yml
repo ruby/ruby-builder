@@ -48,6 +48,8 @@ jobs:
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
     - name: OpenSSL test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - name: Bundler version
+      run: ~/.rubies/${{ matrix.ruby }}/bin/bundle --version
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
@@ -110,6 +112,8 @@ jobs:
       run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby --version
     - name: OpenSSL test
       run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - name: Bundler version
+      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle --version
 
     - name: Create archive
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
