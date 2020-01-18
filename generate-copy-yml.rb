@@ -36,7 +36,7 @@ versions.each_pair { |engine, vs|
     platforms.each { |os|
       yaml << <<YAML
     - name: Download #{ruby}-#{os}
-      run: wget '#{download_url_base}/#{ruby}-#{os}.tar.gz'
+      run: wget --no-verbose '#{download_url_base}/#{ruby}-#{os}.tar.gz'
     - name: Upload #{ruby}-#{os}
       uses: actions/upload-release-asset@v1.0.1
       env:
