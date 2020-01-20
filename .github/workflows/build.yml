@@ -81,19 +81,24 @@ jobs:
         tag=builds-newer-openssl
         echo "::set-output name=tag::$tag"
       shell: bash
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
-      shell: bash
+    # - name: Check if already built
+    #   run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+    #   shell: bash
 
-    - run: curl --fail -L -O 'https://s3.amazonaws.com/jruby.org/downloads/${{ matrix.jruby-version }}/jruby_windows_x64_${{ matrix.underscore-version }}.exe'
+    - run: curl --fail -L -O 'https://repo1.maven.org/maven2/org/jruby/jruby-dist/9.2.9.0/jruby-dist-9.2.9.0-bin.tar.gz'
       shell: bash
     - name: Build JRuby
       shell: bash
       run: |
         mkdir ~/.rubies
-        ./jruby_windows_x64_${{ matrix.underscore-version }}.exe -q -dir ~/.rubies/${{ matrix.ruby }}
+        tar xf jruby-dist-9.2.9.0-bin.tar.gz -C ~/.rubies
         cd ~/.rubies/${{ matrix.ruby }}/bin
-        echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
+        cp jruby.exe ruby.exe
+      # echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
+
+    - run: ~/.rubies/${{ matrix.ruby }}/bin/jruby.exe --version
+    - run: ~/.rubies/${{ matrix.ruby }}/bin/ruby.exe --version
+
     - name: Install Bundler if needed
       shell: bash
       run: |
@@ -119,19 +124,19 @@ jobs:
     - name: Bundler version (exe)
       run: ~/.rubies/${{ matrix.ruby }}/bin/jruby.exe -S bundle --version
 
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-      shell: bash
-    - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1.0.1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/$TAG' | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_content_type: application/gzip
+    # - name: Create archive
+    #   run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+    #   shell: bash
+    # - name: Upload Built Ruby
+    #   uses: actions/upload-release-asset@v1.0.1
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/$TAG' | jq -r .upload_url
+    #     upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+    #     asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+    #     asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+    #     asset_content_type: application/gzip
 
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
