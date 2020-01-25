@@ -185,3 +185,64 @@ jobs:
         asset_path: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_name: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
+
+  buildRubinius:
+    if: true
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
+        ruby: [ rubinius-4.13 ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Set tag name
+      id: info
+      run: |
+        tag=builds-newer-openssl
+        echo "::set-output name=tag::$tag"
+    - name: Check if already built
+      run: '! curl -s --head --fail https://github.com/eregon/ruby-install-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+
+    - name: apt-get update on Ubuntu
+      run: sudo apt-get update
+      if: startsWith(matrix.os, 'ubuntu')
+    - run: sudo apt-get install ruby clang llvm
+      if: startsWith(matrix.os, 'ubuntu')
+    - run: brew install llvm
+      if: matrix.os == 'macos-latest'
+
+    - run: wget 'http://releases.rubinius.com/${{ matrix.ruby }}.tar.bz2'
+    - run: tar xf ${{ matrix.ruby }}.tar.bz2
+    - name: Build Rubinius
+      run: |
+        cd ${{ matrix.ruby }}
+        ./configure --prefix=$HOME/.rubies/${{ matrix.ruby }}
+        make
+        make install
+
+    - name: Install Bundler if needed
+      run: |
+        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
+          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+          gem install bundler -v '~> 1' --no-document
+        fi
+
+    - name: Basic test
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+    - name: OpenSSL test
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - name: Bundler version
+      run: ~/.rubies/${{ matrix.ruby }}/gems/bin/bundle --version
+
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+    - name: Upload Built Ruby
+      uses: actions/upload-release-asset@v1.0.1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        # curl -s 'https://api.github.com/repos/eregon/ruby-install-builder/releases/tags/$TAG' | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/eregon/ruby-install-builder/releases/22947744/assets{?name,label}'
+        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_content_type: application/gzip
