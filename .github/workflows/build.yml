@@ -65,7 +65,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
@@ -92,6 +92,8 @@ jobs:
         mkdir ~/.rubies
         tar xf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz -C ~/.rubies
         cd ~/.rubies/${{ matrix.ruby }}/bin
+        # Remove the Bash launcher, always use jruby.exe
+        rm jruby
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
     - name: Install Bundler if needed
       shell: bash
@@ -107,6 +109,16 @@ jobs:
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open(%{https://rubygems.org/}) { |f| f.read(1024) }'
     - name: Bundler version
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -S bundle --version
+
+    - name: Basic test (Bash)
+      run: ~/.rubies/${{ matrix.ruby }}/bin/jruby --version
+      shell: bash
+    - name: OpenSSL test (Bash)
+      run: ~/.rubies/${{ matrix.ruby }}/bin/jruby -ropen-uri -e 'puts open(%{https://rubygems.org/}) { |f| f.read(1024) }'
+      shell: bash
+    - name: Bundler version (Bash)
+      run: ~/.rubies/${{ matrix.ruby }}/bin/jruby -S bundle --version
+      shell: bash
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
@@ -187,7 +199,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildRubinius:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
