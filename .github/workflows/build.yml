@@ -56,7 +56,9 @@ jobs:
     - name: OpenSSL test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - name: Bundler version
-      run: ~/.rubies/${{ matrix.ruby }}/bin/bundle --version
+      run: |
+        export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+        bundle --version
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
