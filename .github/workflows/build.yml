@@ -39,7 +39,7 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
 
     - name: Build Ruby
-      run: ruby-install --no-install-deps ${{ matrix.ruby }} -- --disable-install-doc
+      run: ruby-install --no-install-deps -j4 ${{ matrix.ruby }} -- --disable-install-doc
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Install Bundler if needed
