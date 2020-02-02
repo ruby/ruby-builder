@@ -3,7 +3,7 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -146,7 +146,7 @@ jobs:
   # Ruby 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
@@ -180,6 +180,7 @@ jobs:
       run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/ruby-${{ matrix.ruby-version }}
       env:
         RUBY_CONFIGURE_OPTS: --disable-install-doc
+        CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
