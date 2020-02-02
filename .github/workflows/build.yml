@@ -8,7 +8,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ "ruby-2.4.0", "ruby-2.4.1", "ruby-2.4.2", "ruby-2.4.3", "ruby-2.4.4", "ruby-2.4.5", "ruby-2.4.6", "ruby-2.4.7", "ruby-2.4.9" ]
+        ruby: [ "ruby-2.7.0" ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
