@@ -49,16 +49,16 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - name: Basic test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
+    - uses: actions/checkout@v2
+    - run: ruby --version
+    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - run: gem install json:2.2.0 --no-document
+    - run: bundle --version
+    - run: bundle install
+    - run: bundle exec rake --version
     - name: Subprocess test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -e 'p RbConfig::CONFIG["CPPFLAGS"]; def Warning.warn(s); raise s; end; system RbConfig.ruby, "-e", "p :OK"'
-    - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
-    - name: Bundler version
-      run: |
-        export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-        bundle --version
+      run: ruby -e 'p RbConfig::CONFIG["CPPFLAGS"]; def Warning.warn(s); raise s; end; system RbConfig.ruby, "-e", "p :OK"'
 
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
@@ -187,18 +187,20 @@ jobs:
           export PATH="$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
-
-    - name: Basic test
-      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby --version
-    - name: Subprocess test
-      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -rstringio -e 'p RbConfig::CONFIG["CPPFLAGS"]; $stderr = StringIO.new; system RbConfig.ruby, "-e", "p :OK"; out=$stderr.string; $stderr=STDERR; abort out unless out.empty?'
-    - name: OpenSSL test
-      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
-    - name: Bundler version
-      run: ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle --version
-
     - name: Create archive
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
+
+    - run: echo "::add-path::$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin"
+    - uses: actions/checkout@v2
+    - run: ruby --version
+    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - run: gem install json:2.2.0 --no-document
+    - run: bundle --version
+    - run: bundle install
+    - run: bundle exec rake --version
+    - name: Subprocess test
+      run: ruby -rstringio -e 'p RbConfig::CONFIG["CPPFLAGS"]; $stderr = StringIO.new; system RbConfig.ruby, "-e", "p :OK"; out=$stderr.string; $stderr=STDERR; abort out unless out.empty?'
+
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
@@ -243,16 +245,19 @@ jobs:
         ./configure --prefix=$HOME/.rubies/${{ matrix.ruby }}
         make
         make install
-
-    - name: Basic test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
-    - name: OpenSSL test
-      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
-    - name: Bundler version
-      run: ~/.rubies/${{ matrix.ruby }}/gems/bin/bundle --version
-
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+
+    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
+    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/gems/bin"
+    - uses: actions/checkout@v2
+    - run: ruby --version
+    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - run: gem install json:2.2.0 --no-document
+    - run: bundle --version
+    - run: bundle install
+    - run: bundle exec rake --version
+
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
