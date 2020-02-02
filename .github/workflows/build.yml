@@ -3,12 +3,12 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ truffleruby-19.3.1 ]
+        ruby: [ "ruby-2.6.0", "ruby-2.6.1", "ruby-2.6.2", "ruby-2.6.3", "ruby-2.6.4", "ruby-2.6.5" ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
@@ -40,6 +40,8 @@ jobs:
 
     - name: Build Ruby
       run: ruby-install --no-install-deps ${{ matrix.ruby }} -- --disable-install-doc
+      env:
+        CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
@@ -49,6 +51,8 @@ jobs:
 
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
+    - name: Subprocess test
+      run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -e 'p RbConfig::CONFIG["CPPFLAGS"]; def Warning.warn(s); raise s; end; system RbConfig.ruby, "-e", "p :OK"'
     - name: OpenSSL test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - name: Bundler version
