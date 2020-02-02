@@ -3,12 +3,12 @@ on: [push]
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ "ruby-2.7.0" ]
+        ruby: [ jruby-9.2.9.0, truffleruby-19.3.0, truffleruby-19.3.1 ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
@@ -30,9 +30,9 @@ jobs:
 
       # Install packages
     - run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
+      if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ruby, 'ruby-')
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
-      if: startsWith(matrix.os, 'ubuntu')
+      if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ruby, 'ruby-')
 
     - name: Install system ruby for ruby-2.5.2
       run: sudo apt-get install -y --no-install-recommends ruby
@@ -72,7 +72,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
