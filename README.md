@@ -1,6 +1,6 @@
 # ruby-builder
 
-A repository building rubies to be used in GitHub Actions.
+A repository building released rubies to be used in GitHub Actions.
 
 The action to use the prebuilt rubies is [use-ruby-action](https://github.com/eregon/use-ruby-action).
 
