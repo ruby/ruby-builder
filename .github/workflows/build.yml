@@ -11,6 +11,7 @@ jobs:
         ruby: [ jruby-9.2.9.0, truffleruby-19.3.0, truffleruby-19.3.1 ]
     runs-on: ${{ matrix.os }}
     steps:
+    - uses: actions/checkout@v2
     - name: Set tag name
       id: info
       run: |
@@ -50,7 +51,6 @@ jobs:
         fi
 
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
-    - uses: actions/checkout@v2
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -154,6 +154,7 @@ jobs:
         ruby-version: [ 2.3.0, 2.3.1, 2.3.2, 2.3.3, 2.3.4, 2.3.5, 2.3.6, 2.3.7, 2.3.8 ]
     runs-on: ${{ matrix.os }}
     steps:
+    - uses: actions/checkout@v2
     - name: Set tag name
       id: info
       run: |
@@ -191,7 +192,6 @@ jobs:
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
 
     - run: echo "::add-path::$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin"
-    - uses: actions/checkout@v2
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -221,6 +221,7 @@ jobs:
         ruby: [ rubinius-4.14 ]
     runs-on: ${{ matrix.os }}
     steps:
+    - uses: actions/checkout@v2
     - name: Set tag name
       id: info
       run: |
@@ -250,7 +251,6 @@ jobs:
 
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/gems/bin"
-    - uses: actions/checkout@v2
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
