@@ -211,12 +211,12 @@ jobs:
         asset_content_type: application/gzip
 
   buildRubinius:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ rubinius-4.14 ]
+        ruby: [ rubinius-4.15 ]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Set tag name
@@ -243,13 +243,6 @@ jobs:
         ./configure --prefix=$HOME/.rubies/${{ matrix.ruby }}
         make
         make install
-
-    - name: Install Bundler if needed
-      run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
-          gem install bundler -v '~> 1' --no-document
-        fi
 
     - name: Basic test
       run: ~/.rubies/${{ matrix.ruby }}/bin/ruby --version
