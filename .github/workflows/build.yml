@@ -28,15 +28,18 @@ jobs:
     - name: List versions
       run: ruby-install
 
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
+      # Install packages
+    - run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
+    - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
+      if: startsWith(matrix.os, 'ubuntu')
+
     - name: Install system ruby for ruby-2.5.2
       run: sudo apt-get install ruby
       if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
 
     - name: Build Ruby
-      run: ruby-install ${{ matrix.ruby }} -- --disable-install-doc
+      run: ruby-install --no-install-deps ${{ matrix.ruby }} -- --disable-install-doc
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
@@ -161,10 +164,10 @@ jobs:
     - name: List versions
       run: ruby-build --definitions
 
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
+      # Install packages
+    - run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
-    - run: sudo apt-get install -y libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
+    - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
       if: startsWith(matrix.os, 'ubuntu')
 
     - name: Build Ruby
@@ -215,8 +218,8 @@ jobs:
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/eregon/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
-    - name: apt-get update on Ubuntu
-      run: sudo apt-get update
+    # Install packages
+    - run: sudo apt-get update
       if: startsWith(matrix.os, 'ubuntu')
     - run: sudo apt-get install ruby clang llvm
       if: startsWith(matrix.os, 'ubuntu')
