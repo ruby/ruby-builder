@@ -72,7 +72,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
@@ -208,7 +208,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildRubinius:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
