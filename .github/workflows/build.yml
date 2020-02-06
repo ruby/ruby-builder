@@ -167,7 +167,7 @@ jobs:
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
 
     - name: Clone ruby-build
-      run: git clone --branch ruby23-openssl-linux https://github.com/ruby/ruby-build.git
+      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
