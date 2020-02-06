@@ -15,8 +15,8 @@ versions = {
 
 platforms = [ "ubuntu-16.04", "ubuntu-18.04", "macos-latest" ]
 
-download_url_base = "https://github.com/eregon/ruby-builder/releases/download/#{from_tag}"
-upload_url = `curl -s 'https://api.github.com/repos/eregon/ruby-builder/releases/tags/#{to_tag}' | jq -r .upload_url`.strip
+download_url_base = "https://github.com/ruby/ruby-builder/releases/download/#{from_tag}"
+upload_url = `curl -s 'https://api.github.com/repos/ruby/ruby-builder/releases/tags/#{to_tag}' | jq -r .upload_url`.strip
 p upload_url
 
 yaml = <<YAML

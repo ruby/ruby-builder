@@ -1,5 +1,8 @@
 name: Build Ruby for GitHub Actions
-on: [push]
+on:
+  push:
+    paths-ignore:
+    - README.md
 jobs:
   # Build stable releases
   build:
@@ -18,7 +21,7 @@ jobs:
         tag=builds-no-warn
         echo "::set-output name=tag::$tag"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
     - name: Clone ruby-install
       run: git clone https://github.com/postmodern/ruby-install.git
@@ -67,8 +70,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # curl -s "https://api.github.com/repos/eregon/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-builder/releases/23319612/assets{?name,label}'
+        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/23319612/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
@@ -90,7 +93,7 @@ jobs:
         echo "::set-output name=tag::$tag"
       shell: bash
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
       shell: bash
 
     - run: curl --fail -L -O 'https://repo1.maven.org/maven2/org/jruby/jruby-dist/${{ matrix.jruby-version }}/jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz'
@@ -137,8 +140,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # curl -s "https://api.github.com/repos/eregon/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-builder/releases/23319612/assets{?name,label}'
+        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/23319612/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
@@ -161,10 +164,10 @@ jobs:
         tag=builds-no-warn
         echo "::set-output name=tag::$tag"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
 
     - name: Clone ruby-build
-      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+      run: git clone --branch ruby23-openssl-linux https://github.com/ruby/ruby-build.git
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
@@ -206,14 +209,14 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # curl -s "https://api.github.com/repos/eregon/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-builder/releases/23319612/assets{?name,label}'
+        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/23319612/assets{?name,label}'
         asset_path: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_name: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
 
   buildRubinius:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -228,7 +231,7 @@ jobs:
         tag=builds-no-warn
         echo "::set-output name=tag::$tag"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/eregon/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
     # Install packages
     - run: sudo apt-get update
@@ -263,8 +266,8 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        # curl -s "https://api.github.com/repos/eregon/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/eregon/ruby-builder/releases/23319612/assets{?name,label}'
+        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/23319612/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
