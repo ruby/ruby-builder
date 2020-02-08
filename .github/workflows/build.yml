@@ -52,6 +52,8 @@ jobs:
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
 
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
     - run: ruby --version
@@ -63,8 +65,6 @@ jobs:
     - name: Subprocess test
       run: ruby -e 'p RbConfig::CONFIG["CPPFLAGS"]; def Warning.warn(s); raise s; end; system RbConfig.ruby, "-e", "p :OK"'
 
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
@@ -116,6 +116,9 @@ jobs:
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      shell: bash
 
     - run: echo "::add-path::$Env:UserProfile\.rubies\jruby-9.2.9.0\bin"
     - run: echo $Env:PATH
@@ -140,9 +143,6 @@ jobs:
     - run: bundle exec rake --version
       shell: bash
 
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-      shell: bash
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1.0.1
       env:
