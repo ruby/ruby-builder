@@ -38,7 +38,7 @@ versions.each_pair { |engine, vs|
     - name: Download #{ruby}-#{os}
       run: wget --no-verbose '#{download_url_base}/#{ruby}-#{os}.tar.gz'
     - name: Upload #{ruby}-#{os}
-      uses: actions/upload-release-asset@v1.0.1
+      uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
