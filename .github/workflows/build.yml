@@ -62,8 +62,7 @@ jobs:
     - run: bundle --version
     - run: bundle install
     - run: bundle exec rake --version
-    - name: Subprocess test
-      run: ruby -e 'p RbConfig::CONFIG["CPPFLAGS"]; def Warning.warn(s); raise s; end; system RbConfig.ruby, "-e", "p :OK"'
+    - run: ruby test_subprocess.rb
 
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1
@@ -209,8 +208,7 @@ jobs:
     - run: bundle --version
     - run: bundle install
     - run: bundle exec rake --version
-    - name: Subprocess test
-      run: ruby -rstringio -e 'p RbConfig::CONFIG["CPPFLAGS"]; $stderr = StringIO.new; system RbConfig.ruby, "-e", "p :OK"; out=$stderr.string; $stderr=STDERR; abort out unless out.empty?'
+    - run: ruby test_subprocess.rb
 
     - name: Upload Built Ruby
       uses: actions/upload-release-asset@v1
