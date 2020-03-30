@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ jruby-9.2.11.1 ]
+        ruby: [ "ruby-2.6.0", "ruby-2.6.1", "ruby-2.6.2", "ruby-2.6.3", "ruby-2.6.4", "ruby-2.6.5" ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
