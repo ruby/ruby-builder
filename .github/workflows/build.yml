@@ -46,14 +46,14 @@ jobs:
       run: ruby-install --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --disable-install-doc
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
 
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
     - run: ruby --version
@@ -108,6 +108,9 @@ jobs:
         cp jruby ruby
         # Create ruby.bat, so 'ruby' works in pwsh
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
+    - name: Create archive
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      shell: bash
     - name: Install Bundler if needed
       shell: bash
       run: |
@@ -115,9 +118,6 @@ jobs:
           export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
-    - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
-      shell: bash
 
     - run: echo "::add-path::$Env:UserProfile\.rubies\${{ matrix.ruby }}\bin"
     - run: echo $Env:PATH
@@ -192,14 +192,14 @@ jobs:
       env:
         RUBY_CONFIGURE_OPTS: --enable-shared --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+    - name: Create archive
+      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
           export PATH="$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
-    - name: Create archive
-      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
 
     - run: echo "::add-path::$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin"
     - run: ruby --version
