@@ -6,7 +6,7 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -76,13 +76,15 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-latest ]
-        ruby: [ jruby-9.2.11.1 ]
-        jruby-version: [ 9.2.11.1 ]
+        include:
+        - { os: windows-latest, jruby-version: 9.1.17.0, ruby: jruby-9.1.17.0 }
+        - { os: windows-latest, jruby-version: 9.2.9.0,  ruby: jruby-9.2.9.0 }
+        - { os: windows-latest, jruby-version: 9.2.10.0, ruby: jruby-9.2.10.0 }
+        - { os: windows-latest, jruby-version: 9.2.11.0, ruby: jruby-9.2.11.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
