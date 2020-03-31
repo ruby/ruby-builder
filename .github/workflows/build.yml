@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ "ruby-2.4.10", "ruby-2.5.8", "ruby-2.6.6", "ruby-2.7.1" ]
+        ruby: [ "jruby-9.2.11.1" ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -76,7 +76,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
