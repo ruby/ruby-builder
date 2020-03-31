@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, macos-latest ]
-        ruby: [ "ruby-2.4.0", "ruby-2.4.1", "ruby-2.4.2", "ruby-2.4.3", "ruby-2.4.4", "ruby-2.4.5", "ruby-2.4.6", "ruby-2.4.7", "ruby-2.4.9" ]
+        ruby: [ "ruby-2.4.10", "ruby-2.5.8", "ruby-2.6.6", "ruby-2.7.1" ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -156,7 +156,7 @@ jobs:
   # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
