@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-20.04 ]
-        ruby: [ "truffleruby-20.1.0" ]
+        ruby: ["ruby-2.4.0", "ruby-2.4.1", "ruby-2.4.2", "ruby-2.4.3", "ruby-2.4.4", "ruby-2.4.5", "ruby-2.4.6", "ruby-2.4.7", "ruby-2.4.9", "ruby-2.4.10"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -225,7 +225,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildRubinius:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
