@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: [ jruby-9.2.12.0 ]
+        ruby: [ jruby-9.2.13.0 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -76,12 +76,12 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-latest, jruby-version: 9.2.12.0, ruby: jruby-9.2.12.0 }
+        - { os: windows-latest, jruby-version: 9.2.13.0, ruby: jruby-9.2.13.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -155,7 +155,7 @@ jobs:
   # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
