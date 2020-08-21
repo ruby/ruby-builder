@@ -155,7 +155,7 @@ jobs:
   # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
@@ -176,7 +176,7 @@ jobs:
       run: |
         suffix=''
         if [ "${{ matrix.shared }}" == "0" ]; then suffix="noshared"; fi
-        fname="ruby-${{ matrix.ruby-version}}$suffix-${{ matrix.os }}.tar.gz"
+        fname="ruby-${{ matrix.ruby-version}}_$suffix-${{ matrix.os }}.tar.gz"
         echo "::set-output name=filename::$fname"
 
     - name: Check if already built
