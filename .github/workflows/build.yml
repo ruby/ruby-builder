@@ -169,18 +169,14 @@ jobs:
       id: info
       run: |
         tag=enable-shared
+        suffix=''
+        if [ "${{ matrix.shared }}" == "0" ]; then suffix="_noshared"; fi
+        filename="ruby-${{ matrix.ruby-version}}$suffix-${{ matrix.os }}.tar.gz"
+        echo "::set-output name=filename::$filename"
         echo "::set-output name=tag::$tag"
 
-    - name: Set result filename
-      id: result
-      run: |
-        suffix=''
-        if [ "${{ matrix.shared }}" == "0" ]; then suffix="noshared"; fi
-        fname="ruby-${{ matrix.ruby-version}}_$suffix-${{ matrix.os }}.tar.gz"
-        echo "::set-output name=filename::$fname"
-
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.result.outputs.filename }}'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.info.outputs.filename }}'
 
     - name: Clone ruby-build
       run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
@@ -206,7 +202,7 @@ jobs:
         RUBY_CONFIGURE_OPTS: --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
-      run: tar czf ${{ steps.result.outputs.filename }} -C ~/.rubies ruby-${{ matrix.ruby-version }}
+      run: tar czf ${{ steps.info.outputs.filename }} -C ~/.rubies ruby-${{ matrix.ruby-version }}
     - name: Install Bundler if needed
       run: |
         if [ ! -e ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
@@ -230,8 +226,8 @@ jobs:
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/25022539/assets{?name,label}'
-        asset_path: ${{ steps.result.outputs.filename }}
-        asset_name: ${{ steps.result.outputs.filename }}
+        asset_path: ${{ steps.info.outputs.filename }}
+        asset_name: ${{ steps.info.outputs.filename }}
         asset_content_type: application/gzip
 
   buildRubinius:
