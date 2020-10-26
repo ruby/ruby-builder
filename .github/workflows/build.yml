@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: [ ruby-2.7.2 ]
+        ruby: [ ruby-3.0.0-preview1 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -57,7 +57,7 @@ jobs:
 
     - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
     - run: ruby --version
-    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - run: ruby -ropen-uri -e 'puts URI.open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
     - run: bundle --version
     - run: bundle install
