@@ -41,19 +41,19 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
 
     - name: Build Ruby
-      run: ruby-install --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
+      run: ruby-install --prefix ~/build_prefix/${{ matrix.ruby }} --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ${{ matrix.ruby }}
     - name: Install Bundler if needed
       run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+        if [ ! -e ~/build_prefix/${{ matrix.ruby }}/bin/bundle ]; then
+          export PATH="$HOME/build_prefix/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
+    - run: echo "$HOME/build_prefix/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -98,25 +98,25 @@ jobs:
     - name: Build JRuby
       shell: bash
       run: |
-        mkdir ~/.rubies
-        tar xf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz -C ~/.rubies
-        cd ~/.rubies/${{ matrix.ruby }}/bin
+        mkdir ~/build_prefix
+        tar xf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz -C ~/build_prefix
+        cd ~/build_prefix/${{ matrix.ruby }}/bin
         # Copy bash launcher, so 'ruby' works in bash
         cp jruby ruby
         # Create ruby.bat, so 'ruby' works in pwsh
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ${{ matrix.ruby }}
       shell: bash
     - name: Install Bundler if needed
       shell: bash
       run: |
-        if [ ! -e ~/.rubies/${{ matrix.ruby }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/${{ matrix.ruby }}/bin:$PATH"
+        if [ ! -e ~/build_prefix/${{ matrix.ruby }}/bin/bundle ]; then
+          export PATH="$HOME/build_prefix/${{ matrix.ruby }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "$Env:UserProfile\.rubies\${{ matrix.ruby }}\bin" >> $Env:GITHUB_PATH
+    - run: echo "$Env:UserProfile\build_prefix\${{ matrix.ruby }}\bin" >> $Env:GITHUB_PATH
     - run: echo $Env:PATH
 
     - run: ruby --version
@@ -184,20 +184,20 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu')
 
     - name: Build Ruby
-      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/ruby-${{ matrix.ruby-version }}
+      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/build_prefix/ruby-${{ matrix.ruby-version }}
       env:
         RUBY_CONFIGURE_OPTS: --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
-      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
+      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ruby-${{ matrix.ruby-version }}
     - name: Install Bundler if needed
       run: |
-        if [ ! -e ~/.rubies/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
-          export PATH="$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin:$PATH"
+        if [ ! -e ~/build_prefix/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
+          export PATH="$HOME/build_prefix/ruby-${{ matrix.ruby-version }}/bin:$PATH"
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin" >> $GITHUB_PATH
+    - run: echo "$HOME/build_prefix/ruby-${{ matrix.ruby-version }}/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -246,14 +246,14 @@ jobs:
     - name: Build Rubinius
       run: |
         cd ${{ matrix.ruby }}
-        ./configure --prefix=$HOME/.rubies/${{ matrix.ruby }}
+        ./configure --prefix=$HOME/build_prefix/${{ matrix.ruby }}
         make
         make install
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
+      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ${{ matrix.ruby }}
 
-    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
-    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/gems/bin" >> $GITHUB_PATH
+    - run: echo "$HOME/build_prefix/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
+    - run: echo "$HOME/build_prefix/${{ matrix.ruby }}/gems/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
