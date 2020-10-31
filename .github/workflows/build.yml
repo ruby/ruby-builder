@@ -33,8 +33,6 @@ jobs:
       run: ruby-install
 
       # Install packages
-    - run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ruby, 'ruby-')
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
       if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ruby, 'ruby-')
 
@@ -182,8 +180,6 @@ jobs:
       run: ruby-build --definitions
 
       # Install packages
-    - run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
       if: startsWith(matrix.os, 'ubuntu')
 
@@ -240,8 +236,6 @@ jobs:
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
     # Install packages
-    - run: sudo apt-get update
-      if: startsWith(matrix.os, 'ubuntu')
     - run: sudo apt-get install ruby clang llvm
       if: startsWith(matrix.os, 'ubuntu')
     - run: brew install llvm
