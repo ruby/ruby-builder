@@ -44,6 +44,9 @@ jobs:
       run: ruby-install --prefix ~/build_prefix/${{ matrix.ruby }} --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+    - name: Fix the RubyGems line when using load-relative
+      run: ~/build_prefix/${{ matrix.ruby }}/bin/ruby --disable-gems fix-rubygems-line.rb
+      if: startsWith(matrix.ruby, 'ruby-')
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ${{ matrix.ruby }}
     - name: Install Bundler if needed
