@@ -53,7 +53,7 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
+    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -116,7 +116,7 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "::add-path::$Env:UserProfile\.rubies\${{ matrix.ruby }}\bin"
+    - run: echo "$Env:UserProfile\.rubies\${{ matrix.ruby }}\bin" >> $Env:GITHUB_PATH
     - run: echo $Env:PATH
 
     - run: ruby --version
@@ -197,7 +197,7 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "::add-path::$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin"
+    - run: echo "$HOME/.rubies/ruby-${{ matrix.ruby-version }}/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
@@ -252,8 +252,8 @@ jobs:
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C ~/.rubies ${{ matrix.ruby }}
 
-    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/bin"
-    - run: echo "::add-path::$HOME/.rubies/${{ matrix.ruby }}/gems/bin"
+    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/bin" >> $GITHUB_PATH
+    - run: echo "$HOME/.rubies/${{ matrix.ruby }}/gems/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
