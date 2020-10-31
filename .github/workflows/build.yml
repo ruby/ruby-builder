@@ -43,7 +43,7 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
 
     - name: Build Ruby
-      run: ruby-install --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --disable-install-doc
+      run: ruby-install --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
@@ -190,7 +190,7 @@ jobs:
     - name: Build Ruby
       run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/.rubies/ruby-${{ matrix.ruby-version }}
       env:
-        RUBY_CONFIGURE_OPTS: --enable-shared --disable-install-doc
+        RUBY_CONFIGURE_OPTS: --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/.rubies ruby-${{ matrix.ruby-version }}
