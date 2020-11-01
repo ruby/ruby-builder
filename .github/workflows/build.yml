@@ -161,8 +161,8 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        # ruby-version: [ "2.1.9" ]
-        ruby-version: [ "2.2.10" ]
+        ruby-version: [ "2.1.9" ]
+        # ruby-version: [ "2.2.10" ]
         # ruby-version: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6", "2.3.7", "2.3.8" ]
     runs-on: ${{ matrix.os }}
     steps:
