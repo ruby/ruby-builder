@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: ["truffleruby-19.3.0", "truffleruby-19.3.1", "truffleruby-20.0.0", "truffleruby-20.1.0", "truffleruby-20.2.0"]
+        ruby: ["jruby-9.1.17.0", "jruby-9.2.9.0", "jruby-9.2.10.0", "jruby-9.2.11.0", "jruby-9.2.11.1", "jruby-9.2.12.0", "jruby-9.2.13.0"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -77,11 +77,17 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         include:
+        - { os: windows-latest, jruby-version: 9.1.17.0, ruby: jruby-9.1.17.0 }
+        - { os: windows-latest, jruby-version: 9.2.9.0, ruby: jruby-9.2.9.0 }
+        - { os: windows-latest, jruby-version: 9.2.10.0, ruby: jruby-9.2.10.0 }
+        - { os: windows-latest, jruby-version: 9.2.11.0, ruby: jruby-9.2.11.0 }
+        - { os: windows-latest, jruby-version: 9.2.11.1, ruby: jruby-9.2.11.1 }
+        - { os: windows-latest, jruby-version: 9.2.12.0, ruby: jruby-9.2.12.0 }
         - { os: windows-latest, jruby-version: 9.2.13.0, ruby: jruby-9.2.13.0 }
     runs-on: ${{ matrix.os }}
     steps:
