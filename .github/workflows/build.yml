@@ -6,7 +6,7 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -156,13 +156,13 @@ jobs:
   # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
   # To workaround that, we use ruby-build which builds its own OpenSSL.
   build23:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby-version: [ "2.1.9" ]
-        # ruby-version: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6", "2.3.7", "2.3.8" ]
+        # ruby-version: [ "2.1.9" ]
+        ruby-version: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6", "2.3.7", "2.3.8" ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -191,6 +191,9 @@ jobs:
       env:
         RUBY_CONFIGURE_OPTS: --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+    - name: Fix the RubyGems line when using load-relative
+      run: ~/build_prefix/ruby-${{ matrix.ruby-version }}/bin/ruby --disable-gems fix-rubygems-line.rb
+      if: startsWith(matrix.ruby, 'ruby-')
     - name: Create archive
       run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ruby-${{ matrix.ruby-version }}
     - name: Install Bundler if needed
