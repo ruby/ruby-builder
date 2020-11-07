@@ -25,12 +25,13 @@ jobs:
 
     # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
     # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
-    - name: Clone ruby-build (Ruby <= 2.3)
-      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
-      if: startsWith(matrix.ruby, 'ruby-2.3') || startsWith(matrix.ruby, 'ruby-2.2') || startsWith(matrix.ruby, 'ruby-2.1')
     - name: Clone ruby-build
-      run: git clone https://github.com/rbenv/ruby-build.git
-      if: !(startsWith(matrix.ruby, 'ruby-2.3') || startsWith(matrix.ruby, 'ruby-2.2') || startsWith(matrix.ruby, 'ruby-2.1'))
+      run: |
+        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* ]]; then
+          git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+        else
+          git clone https://github.com/rbenv/ruby-build.git
+        fi
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
