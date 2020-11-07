@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-latest ]
-        ruby: ["ruby-2.2.10"]
+        ruby: ["ruby-2.1.9"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
