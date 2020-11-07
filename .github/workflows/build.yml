@@ -23,14 +23,19 @@ jobs:
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
-    - name: Clone ruby-install
-      run: git clone https://github.com/postmodern/ruby-install.git
-    - name: Install ruby-install
-      run: sudo make install
-      working-directory: ./ruby-install
+    # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
+    # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
+    - name: Clone ruby-build (Ruby <= 2.3)
+      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+      if: startsWith(matrix.ruby, 'ruby-2.3') || startsWith(matrix.ruby, 'ruby-2.2') || startsWith(matrix.ruby, 'ruby-2.1')
+    - name: Clone ruby-build
+      run: git clone https://github.com/rbenv/ruby-build.git
+      if: !(startsWith(matrix.ruby, 'ruby-2.3') || startsWith(matrix.ruby, 'ruby-2.2') || startsWith(matrix.ruby, 'ruby-2.1'))
+    - name: Install ruby-build
+      run: sudo ./ruby-build/install.sh
 
     - name: List versions
-      run: ruby-install
+      run: ruby-build --definitions
 
       # Install packages
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
@@ -40,9 +45,18 @@ jobs:
       run: sudo apt-get install -y --no-install-recommends ruby
       if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
 
+    - name: Set RUBY_BUILD_RUBY_NAME
+      run: |
+        ruby="${{ matrix.ruby }}"
+        if [[ $ruby == ruby-* ]]; then
+          echo "RUBY_BUILD_RUBY_NAME=${ruby#ruby-}" >> $GITHUB_ENV
+        else
+          echo "RUBY_BUILD_RUBY_NAME=$ruby" >> $GITHUB_ENV
+        fi
     - name: Build Ruby
-      run: ruby-install --prefix ~/build_prefix/${{ matrix.ruby }} --no-install-deps -j4 ${{ matrix.ruby }} -- --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
+      run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $HOME/build_prefix/${{ matrix.ruby }}
       env:
+        RUBY_CONFIGURE_OPTS: --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Fix the RubyGems line when using load-relative
       run: ~/build_prefix/${{ matrix.ruby }}/bin/ruby --disable-gems fix-rubygems-line.rb
@@ -157,75 +171,4 @@ jobs:
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33305698/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_content_type: application/gzip
-
-  # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
-  # To workaround that, we use ruby-build which builds its own OpenSSL.
-  build23:
-    if: false
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby-version: [ "2.1.9" ]
-        # ruby-version: [ "2.2.10" ]
-        # ruby-version: [ "2.3.0", "2.3.1", "2.3.2", "2.3.3", "2.3.4", "2.3.5", "2.3.6", "2.3.7", "2.3.8" ]
-    runs-on: ${{ matrix.os }}
-    steps:
-    - uses: actions/checkout@v2
-    - name: Set tag name
-      id: info
-      run: |
-        tag=load-relative
-        echo "::set-output name=tag::$tag"
-    - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz'
-
-    - name: Clone ruby-build
-      run: git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
-    - name: Install ruby-build
-      run: sudo ./ruby-build/install.sh
-
-    - name: List versions
-      run: ruby-build --definitions
-
-      # Install packages
-    - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
-      if: startsWith(matrix.os, 'ubuntu')
-
-    - name: Build Ruby
-      run: ruby-build --verbose ${{ matrix.ruby-version }} $HOME/build_prefix/ruby-${{ matrix.ruby-version }}
-      env:
-        RUBY_CONFIGURE_OPTS: --enable-shared --enable-rpath --enable-load-relative --disable-install-doc
-        CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
-    - name: Fix the RubyGems line when using load-relative
-      run: ~/build_prefix/ruby-${{ matrix.ruby-version }}/bin/ruby --disable-gems fix-rubygems-line.rb
-      if: startsWith(matrix.ruby, 'ruby-')
-    - name: Create archive
-      run: tar czf ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz -C ~/build_prefix ruby-${{ matrix.ruby-version }}
-    - name: Install Bundler if needed
-      run: |
-        if [ ! -e ~/build_prefix/ruby-${{ matrix.ruby-version }}/bin/bundle ]; then
-          export PATH="$HOME/build_prefix/ruby-${{ matrix.ruby-version }}/bin:$PATH"
-          gem install bundler -v '~> 1' --no-document
-        fi
-
-    - run: echo "$HOME/build_prefix/ruby-${{ matrix.ruby-version }}/bin" >> $GITHUB_PATH
-    - run: ruby --version
-    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
-    - run: gem install json:2.2.0 --no-document
-    - run: bundle --version
-    - run: bundle install
-    - run: bundle exec rake --version
-    - run: ruby test_subprocess.rb
-
-    - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33305698/assets{?name,label}'
-        asset_path: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
-        asset_name: ruby-${{ matrix.ruby-version }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
