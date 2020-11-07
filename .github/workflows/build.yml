@@ -18,7 +18,7 @@ jobs:
     - name: Set tag name
       id: info
       run: |
-        tag=load-relative
+        tag=toolcache
         echo "::set-output name=tag::$tag"
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
@@ -91,7 +91,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33305698/assets{?name,label}'
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
@@ -115,7 +115,7 @@ jobs:
     - name: Set tag name
       id: info
       run: |
-        tag=load-relative
+        tag=toolcache
         echo "::set-output name=tag::$tag"
       shell: bash
     - name: Check if already built
@@ -176,7 +176,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33305698/assets{?name,label}'
+        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
         asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
         asset_content_type: application/gzip
