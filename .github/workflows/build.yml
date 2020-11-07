@@ -99,7 +99,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
