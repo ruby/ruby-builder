@@ -62,6 +62,7 @@ jobs:
         else
           echo "PREFIX=$HOME/.rubies/$ruby" >> $GITHUB_ENV
         fi
+    - run: rm -rf $PREFIX
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
