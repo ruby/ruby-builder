@@ -64,6 +64,11 @@ jobs:
           echo "PREFIX=$HOME/.rubies/$ruby" >> $GITHUB_ENV
         fi
     - run: rm -rf $PREFIX
+
+    # To suppress: implicit declaration of function 'rb_str_change_terminator_length' on 2.2.10 on macOS
+    - name: Set warnflags for 2.2.10
+      run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
+      if: matrix.ruby == 'ruby-2.2.10'
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
