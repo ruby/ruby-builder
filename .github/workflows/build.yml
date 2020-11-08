@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-latest ]
-        ruby: ["ruby-2.1.9"]
+        os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
+        ruby: ["ruby-3.0.0-preview1"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
