@@ -85,7 +85,7 @@ jobs:
 
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
     - run: ruby --version
-    - run: ruby -ropen-uri -e 'puts open("https://rubygems.org/") { |f| f.read(1024) }'
+    - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
     - run: bundle --version
     - run: bundle install
@@ -159,7 +159,7 @@ jobs:
     - run: echo $Env:PATH
 
     - run: ruby --version
-    - run: ruby -ropen-uri -e 'puts open(%{https://rubygems.org/}) { |f| f.read(1024) }'
+    - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
     - run: gem install json:2.2.0 --no-document
     - run: bundle --version
     - run: bundle install
@@ -167,7 +167,7 @@ jobs:
 
     - run: ruby --version
       shell: bash
-    - run: ruby -ropen-uri -e 'puts open(%{https://rubygems.org/}) { |f| f.read(1024) }'
+    - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
       shell: bash
     - run: gem install json:2.2.0 --no-document
       shell: bash
