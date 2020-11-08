@@ -65,10 +65,10 @@ jobs:
         fi
     - run: rm -rf $PREFIX
 
-    # To suppress: implicit declaration of function 'rb_str_change_terminator_length' on 2.2.10 on macOS
-    - name: Set warnflags for 2.2.10
+    # macOS runners seem to default to -Werror=implicit-function-declaration, but extconf.rb expects it to be not fatal
+    - name: Set warnflags for Ruby <= 2.2
       run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
-      if: matrix.ruby == 'ruby-2.2.10'
+      if: startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2')
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
