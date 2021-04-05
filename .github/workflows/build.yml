@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: ["ruby-3.0.1"]
+        ruby: ["ruby-2.6.7"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -66,9 +66,10 @@ jobs:
     - run: rm -rf $PREFIX
 
     # macOS runners seem to default to -Werror=implicit-function-declaration, but extconf.rb expects it to be not fatal
+    # See https://bugs.ruby-lang.org/issues/17777 for 2.6.7
     - name: Set warnflags for Ruby <= 2.2
       run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
-      if: startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2')
+      if: startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2') || matrix.ruby == 'ruby-2.6.7'
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
