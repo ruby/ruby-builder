@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: ["jruby-9.2.18.0"]
+        ruby: ["jruby-9.2.19.0"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -110,7 +110,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-latest, jruby-version: 9.2.18.0, ruby: jruby-9.2.18.0 }
+        - { os: windows-latest, jruby-version: 9.2.19.0, ruby: jruby-9.2.19.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
