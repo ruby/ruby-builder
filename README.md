@@ -13,7 +13,7 @@ Please report issues to [ruby/setup-ruby](https://github.com/ruby/setup-ruby).
 When making builds a different way, first create a new release and mark it as `prerelease`.
 
 Then if it might cause breaking changes, open an issue on
-[https://github.com/actions/virtual-environments/issues](actions/virtual-environments) with a description of the changes.
+[actions/virtual-environments](https://github.com/actions/virtual-environments/issues) with a description of the changes.
 This needs to be done 2 weeks prior to using the release.
 
 Once it's ready, mark the release as non-prerelease and switch to it in `ruby/setup-ruby`.
