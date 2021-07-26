@@ -27,7 +27,7 @@ jobs:
     # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
     - name: Clone ruby-build
       run: |
-        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* ]]; then
+        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* || "${{ matrix.ruby }}" == ruby-1.9* ]]; then
           git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
         else
           git clone https://github.com/rbenv/ruby-build.git
