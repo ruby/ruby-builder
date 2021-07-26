@@ -81,7 +81,11 @@ jobs:
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
           export PATH="$PREFIX/bin:$PATH"
-          gem install bundler -v '~> 1' --no-document
+          if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
+            gem install bundler -v '~>1'
+          else
+           gem install bundler -v '~> 1' --no-document
+          fi
         fi
 
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
