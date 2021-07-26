@@ -91,7 +91,8 @@ jobs:
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
-    - run: |
+    - name: Install JSON gem
+      run: |
         if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
           gem install json:2.2.0
         else
