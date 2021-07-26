@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-16.04, ubuntu-18.04, ubuntu-20.04, macos-latest ]
-        ruby: ["ruby-1.9.3-p551"]
+        ruby: ["truffleruby-21.2.0"]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -28,7 +28,7 @@ jobs:
     - name: Clone ruby-build
       run: |
         if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* || "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-          git clone --branch ruby23-openssl-linux https://github.com/mullermp/ruby-build.git
+          git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
         else
           git clone https://github.com/rbenv/ruby-build.git
         fi
