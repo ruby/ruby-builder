@@ -84,7 +84,7 @@ jobs:
           if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
             gem install bundler -v '~>1'
           else
-           gem install bundler -v '~> 1' --no-document
+            gem install bundler -v '~> 1' --no-document
           fi
         fi
 
@@ -94,9 +94,9 @@ jobs:
     - name: Install JSON gem
       run: |
         if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-          gem install json:2.2.0
+          gem install json -v '2.2.0'
         else
-          gem install json:2.2.0 --no-document
+          gem install json -v '2.2.0' --no-document
         fi
     - run: bundle --version
     - run: bundle install
