@@ -28,7 +28,7 @@ jobs:
     - name: Clone ruby-build
       run: |
         if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* || "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-          git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
+          git clone --branch ruby23-openssl-linux https://github.com/mullermp/ruby-build.git
         else
           git clone https://github.com/rbenv/ruby-build.git
         fi
