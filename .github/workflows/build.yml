@@ -23,6 +23,14 @@ jobs:
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
 
+    - name: Set NO_DOCUMENT
+      run: |
+        if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
+          echo "NO_DOCUMENT=--no-ri --no-rdoc" >> $GITHUB_ENV
+        else
+          echo "NO_DOCUMENT=--no-document" >> $GITHUB_ENV
+        fi
+
     # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
     # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
     - name: Clone ruby-build
@@ -81,23 +89,14 @@ jobs:
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
           export PATH="$PREFIX/bin:$PATH"
-          if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-            gem install bundler -v '~> 1' --no-ri --no-rdoc
-          else
-            gem install bundler -v '~> 1' --no-document
-          fi
+          gem install bundler -v '~> 1' $NO_DOCUMENT
         fi
 
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
     - name: Install JSON gem
-      run: |
-        if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-          gem install json -v '2.2.0' --no-ri --no-rdoc
-        else
-          gem install json -v '2.2.0' --no-document
-        fi
+      run: gem install json -v '2.2.0' $NO_DOCUMENT
     - run: bundle --version
     - run: bundle install
     - run: bundle exec rake --version
