@@ -82,7 +82,7 @@ jobs:
         if [ ! -e $PREFIX/bin/bundle ]; then
           export PATH="$PREFIX/bin:$PATH"
           if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-            gem install bundler -v '~>1'
+            gem install bundler -v '~> 1' --no-ri --no-rdoc
           else
             gem install bundler -v '~> 1' --no-document
           fi
