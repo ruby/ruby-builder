@@ -27,7 +27,7 @@ jobs:
     # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
     - name: Clone ruby-build
       run: |
-        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* ]]; then
+        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* || "${{ matrix.ruby }}" == ruby-1.9* ]]; then
           git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
         else
           git clone https://github.com/rbenv/ruby-build.git
@@ -69,7 +69,7 @@ jobs:
     # See https://bugs.ruby-lang.org/issues/17777 for 2.6.7
     - name: Set warnflags for Ruby <= 2.2
       run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
-      if: startsWith(matrix.ruby, 'ruby-2.0') || startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2') || matrix.ruby == 'ruby-2.6.7'
+      if: startsWith(matrix.ruby, 'ruby-1.9') || startsWith(matrix.ruby, 'ruby-2.0') || startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2') || matrix.ruby == 'ruby-2.6.7'
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
@@ -81,13 +81,23 @@ jobs:
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
           export PATH="$PREFIX/bin:$PATH"
-          gem install bundler -v '~> 1' --no-document
+          if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
+            gem install bundler -v '~> 1' --no-ri --no-rdoc
+          else
+            gem install bundler -v '~> 1' --no-document
+          fi
         fi
 
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
-    - run: gem install json:2.2.0 --no-document
+    - name: Install JSON gem
+      run: |
+        if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
+          gem install json -v '2.2.0' --no-ri --no-rdoc
+        else
+          gem install json -v '2.2.0' --no-document
+        fi
     - run: bundle --version
     - run: bundle install
     - run: bundle exec rake --version
