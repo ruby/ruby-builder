@@ -33,18 +33,18 @@ YAML
 versions.each_pair { |engine, vs|
   vs.each { |version|
     ruby = "#{engine}-#{version}"
-    platforms.each { |os|
+    platforms.each { |platform|
       yaml << <<YAML
-    - name: Download #{ruby}-#{os}
-      run: wget --no-verbose '#{download_url_base}/#{ruby}-#{os}.tar.gz'
-    - name: Upload #{ruby}-#{os}
+    - name: Download #{ruby}-#{platform}
+      run: wget --no-verbose '#{download_url_base}/#{ruby}-#{platform}.tar.gz'
+    - name: Upload #{ruby}-#{platform}
       uses: actions/upload-release-asset@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         upload_url: '#{upload_url}'
-        asset_path: #{ruby}-#{os}.tar.gz
-        asset_name: #{ruby}-#{os}.tar.gz
+        asset_path: #{ruby}-#{platform}.tar.gz
+        asset_name: #{ruby}-#{platform}.tar.gz
         asset_content_type: application/gzip
 YAML
     }

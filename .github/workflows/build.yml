@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-18.04, ubuntu-20.04, macos-latest ]
+        os: [ ubuntu-18.04, ubuntu-20.04, macos-10.15 ]
         ruby: ["jruby-9.3.0.0"]
     runs-on: ${{ matrix.os }}
     steps:
@@ -20,8 +20,14 @@ jobs:
       run: |
         tag=toolcache
         echo "::set-output name=tag::$tag"
+    - name: Set platform
+      id: platform
+      run: |
+        platform=${{ matrix.os }}
+        platform=${platform/macos-*/macos-latest}
+        echo "::set-output name=platform::$platform"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
 
     - name: Set NO_DOCUMENT
       run: |
@@ -31,7 +37,7 @@ jobs:
           echo "NO_DOCUMENT=--no-document" >> $GITHUB_ENV
         fi
 
-    # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos-latest.
+    # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos.
     # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
     - name: Clone ruby-build
       run: |
@@ -84,7 +90,7 @@ jobs:
         RUBY_CONFIGURE_OPTS: --enable-shared --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
@@ -109,17 +115,17 @@ jobs:
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_path: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_name: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-latest, jruby-version: 9.3.0.0, ruby: jruby-9.3.0.0 }
+        - { os: windows-2019, jruby-version: 9.3.0.0, ruby: jruby-9.3.0.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -129,8 +135,15 @@ jobs:
         tag=toolcache
         echo "::set-output name=tag::$tag"
       shell: bash
+    - name: Set platform
+      id: platform
+      run: |
+        platform=${{ matrix.os }}
+        platform=${platform/windows-*/windows-latest}
+        echo "::set-output name=platform::$platform"
+      shell: bash
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ matrix.os }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
       shell: bash
 
     - name: Set PREFIX
@@ -149,7 +162,7 @@ jobs:
         # Create ruby.bat, so 'ruby' works in pwsh
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
       shell: bash
     - name: Install Bundler if needed
       shell: bash
@@ -189,6 +202,6 @@ jobs:
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ matrix.os }}.tar.gz
+        asset_path: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_name: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_content_type: application/gzip
