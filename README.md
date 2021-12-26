@@ -8,7 +8,13 @@ Please report issues to [ruby/setup-ruby](https://github.com/ruby/setup-ruby).
 
 [The latest release](https://github.com/ruby/ruby-builder/releases/latest) contains all built Rubies.
 
-## Process for new releases
+## Building a new Ruby release
+
+```
+ruby build.rb [ruby|jruby|truffleruby] VERSION
+```
+
+## Process for new builds
 
 When making builds a different way, first create a new release and mark it as `prerelease`.
 
