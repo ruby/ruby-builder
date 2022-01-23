@@ -6,7 +6,7 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
@@ -120,7 +120,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
