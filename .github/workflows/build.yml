@@ -205,3 +205,45 @@ jobs:
         asset_path: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_name: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_content_type: application/gzip
+
+  createPullRequest:
+    name: Create PR to setup-ruby
+    needs: [build, buildJRubyWindows]
+    if: ${{ (needs.build.result == 'success') && (needs.buildJRubyWindows.result != 'failure') }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone setup-ruby
+        uses: actions/checkout@v2
+        with:
+          repository: ruby/setup-ruby
+          fetch-depth: 0
+          token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+
+      - name: Set version
+        id: version
+        run: |
+          commit_message="${{ github.event.head_commit.message }}"
+          if [[ "$commit_message" =~ ^Build\ * ]]; then
+            last_version=${commit_message#* }
+            echo "::set-output name=version::$last_version"
+          else
+            exit 2
+          fi
+
+      - run: ruby new-version.rb ${{ steps.version.outputs.version }}
+      - run: ./pre-commit
+
+      - uses: peter-evans/create-pull-request@v3
+        id: pr
+        with:
+          push-to-fork: ruby-builder-bot/setup-ruby
+          author: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+          committer: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+          title: Add ${{ steps.version.outputs.version }}
+          commit-message: Add ${{ steps.version.outputs.version }}
+          body: Automated PR from ruby/ruby-builder
+          branch: ${{ steps.version.outputs.version }}
+          delete-branch: true
+          token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+      - name: PR URL
+        run: echo "${{ steps.pr.outputs.pull-request-url }}"
