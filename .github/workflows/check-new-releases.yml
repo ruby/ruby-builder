@@ -1,0 +1,34 @@
+name: Check for new Ruby releases in ruby-build
+on:
+  # schedule:
+  # - cron: '0 19 * * *'
+  workflow_dispatch:
+jobs:
+  check_new_releases:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+    - name: Clone setup-ruby
+      uses: actions/checkout@v2
+      with:
+        repository: ruby/setup-ruby
+        path: setup-ruby
+    - name: Clone ruby-build
+      uses: actions/checkout@v2
+      with:
+        repository: rbenv/ruby-build
+        path: ruby-build
+
+    - name: Install ruby-build
+      run: sudo ./ruby-build/install.sh
+    - name: List versions
+      run: ruby-build --definitions
+
+    - name: Setup git user
+      run: |
+        git config user.name 'github-actions[bot]'
+        git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+    - run: ruby check-new-releases.rb

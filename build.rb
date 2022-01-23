@@ -2,6 +2,11 @@ raise unless ARGV.size == 2
 engine, version = ARGV
 engine_version = "#{engine}-#{version}"
 
+def sh(*command)
+  puts command.join(' ')
+  raise "#{command} failed" unless system(*command)
+end
+
 file = ".github/workflows/build.yml"
 lines = File.readlines(file)
 
@@ -21,5 +26,5 @@ if_lines[1].sub!(/if: (true|false)/, "if: #{engine == 'jruby'}")
 
 File.write(file, lines.join)
 
-system 'git', 'add', file
-system 'git', 'commit', '-m', "Build #{engine_version}"
+sh 'git', 'add', file
+sh 'git', 'commit', '-m', "Build #{engine_version}"
