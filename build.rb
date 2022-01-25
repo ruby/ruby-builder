@@ -1,6 +1,7 @@
 raise unless ARGV.size == 2
 engine, version = ARGV
 engine_version = "#{engine}-#{version}"
+engine_versions = engine == 'truffleruby' ? "#{engine_version}, truffleruby+graalvm-#{version}" : engine_version
 
 def sh(*command)
   puts command.join(' ')
@@ -14,7 +15,7 @@ ruby_lines = lines.select { |line| line.include?('ruby: ') }
 raise unless ruby_lines.size == 2
 
 unix, windows = ruby_lines
-unix.sub!(/ruby: .+/, "ruby: [#{engine_version}]")
+unix.sub!(/ruby: .+/, "ruby: [#{engine_versions}]")
 if engine == 'jruby'
   windows.sub!(/jruby-version: .+/, "jruby-version: #{version}, ruby: #{engine_version} }")
 end
