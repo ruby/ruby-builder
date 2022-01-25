@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04, macos-10.15 ]
-        ruby: [truffleruby-22.0.0.2]
+        ruby: [truffleruby-22.0.0.2, truffleruby+graalvm-22.0.0.2]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
