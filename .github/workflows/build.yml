@@ -209,7 +209,7 @@ jobs:
   createPullRequest:
     name: Create PR to setup-ruby
     needs: [build, buildJRubyWindows]
-    if: ${{ (needs.build.result == 'success') && (needs.buildJRubyWindows.result != 'failure') }}
+    if: always() && ${{ (needs.build.result == 'success') && (needs.buildJRubyWindows.result != 'failure') }}
     runs-on: ubuntu-latest
     steps:
     - name: Set version
