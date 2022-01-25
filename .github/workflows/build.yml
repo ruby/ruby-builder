@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04, macos-10.15 ]
-        ruby: [jruby-9.3.3.0]
+        ruby: [truffleruby-22.0.0.2]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
