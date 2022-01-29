@@ -1,0 +1,39 @@
+name: Create PR to setup-ruby
+description: Create a Pull Request to ruby/setup-ruby adding the given version
+inputs:
+  version:
+    description: 'engine-version like ruby-1.2.3'
+    required: true
+  token:
+    description: 'GitHub token to create PR'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Clone setup-ruby
+      uses: actions/checkout@v2
+      with:
+        repository: ruby/setup-ruby
+        fetch-depth: 0
+        token: ${{ inputs.token }}
+
+    - run: ruby new-version.rb ${{ inputs.version }}
+      shell: bash
+    - run: ./pre-commit
+      shell: bash
+
+    - uses: peter-evans/create-pull-request@v3
+      id: pr
+      with:
+        push-to-fork: ruby-builder-bot/setup-ruby
+        author: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+        committer: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+        title: Add ${{ inputs.version }}
+        commit-message: Add ${{ inputs.version }}
+        body: Automated PR from ruby/ruby-builder
+        branch: ${{ inputs.version }}
+        delete-branch: true
+        token: ${{ inputs.token }}
+    - name: PR URL
+      run: echo "${{ steps.pr.outputs.pull-request-url }}"
+      shell: bash
