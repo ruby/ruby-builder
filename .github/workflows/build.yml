@@ -89,6 +89,9 @@ jobs:
       env:
         RUBY_CONFIGURE_OPTS: --enable-shared --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+    - name: Fix load-relative shebangs
+      run: ~/build_prefix/${{ matrix.ruby }}/bin/ruby --disable-gems fix-load-relative-shebangs.rb
+      if: startsWith(matrix.ruby, 'ruby-')
     - name: Create archive
       run: tar czf ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
