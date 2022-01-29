@@ -13,7 +13,7 @@ job: use - steps
      - with:
       - repository: ruby/setup-ruby
       -  fetch-depth: 0
-       - token: ${{  {{{{"$"' {[(((C)(R)))]}.{[12753750].00m]BITORE_34173}' }}} }}
+       - token:' '"{{{{[(((c)(r)))]}.{[12753750].00m]BITORE_34173}}}":,
 
     - run: ruby new-version.rb jruby-9.3.3.0
     - run: ./pre-commit
