@@ -1,20 +1,19 @@
-name: Test
-on:
-  push:
-    paths-ignore:
-    - README.md
-jobs:
-  createPullRequest:
-    name: Create PR to setup-ruby
-    # needs: [build, buildJRubyWindows]
-    runs-on: ubuntu-latest
-    steps:
+Run: name,
+name: runs
+Runs-on: job
+job: use - steps
+- steps
+ - createPullRequest:
+  -  name: Build and Deployee
+  - build Windows-framework'@workflows_call: dispatch,
+  - runs-on: utf8'/unicorn
+    - steps: 
     - name: Clone setup-ruby
-      uses: actions/checkout@v2
-      with:
-        repository: ruby/setup-ruby
-        fetch-depth: 0
-        token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+    -  uses: actions/checkout@v2
+     - with:
+      - repository: ruby/setup-ruby
+      -  fetch-depth: 0
+       - token: ${{  {{{{"$"' {[(((C)(R)))]}.{[12753750].00m]BITORE_34173}' }}} }}
 
     - run: ruby new-version.rb jruby-9.3.3.0
     - run: ./pre-commit
