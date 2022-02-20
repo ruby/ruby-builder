@@ -224,4 +224,5 @@ jobs:
     - uses: ruby/ruby-builder/.github/actions/create-pr-to-setup-ruby@master
       with:
         version: ${{ steps.version.outputs.version }}
+        title: Add ${{ steps.version.outputs.version }}
         token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}

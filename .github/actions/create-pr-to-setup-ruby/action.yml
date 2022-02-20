@@ -7,6 +7,9 @@ inputs:
   token:
     description: 'GitHub token to create PR'
     required: true
+  title:
+    description: 'Used for the PR title and commit message'
+    required: true
 runs:
   using: "composite"
   steps:
@@ -28,8 +31,8 @@ runs:
         push-to-fork: ruby-builder-bot/setup-ruby
         author: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
         committer: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
-        title: Add ${{ inputs.version }}
-        commit-message: Add ${{ inputs.version }}
+        title: ${{ inputs.title }}
+        commit-message: ${{ inputs.title }}
         body: Automated PR from ruby/ruby-builder
         branch: ${{ inputs.version }}
         delete-branch: true
