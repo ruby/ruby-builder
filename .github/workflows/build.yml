@@ -6,12 +6,12 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04, macos-10.15 ]
-        ruby: [ruby-3.2.0-preview1]
+        ruby: [jruby-9.2.21.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -120,12 +120,12 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-2019, jruby-version: 9.3.4.0, ruby: jruby-9.3.4.0 }
+        - { os: windows-2019, jruby-version: 9.2.21.0, ruby: jruby-9.2.21.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
