@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-18.04, ubuntu-20.04, macos-10.15 ]
-        ruby: [jruby-9.3.6.0]
+        ruby: [jruby-9.2.21.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -125,7 +125,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-2019, jruby-version: 9.3.6.0, ruby: jruby-9.3.6.0 }
+        - { os: windows-2019, jruby-version: 9.2.21.0, ruby: jruby-9.2.21.0 }
     runs-on: ${{ matrix.os }}
     env: # https://github.com/jruby/jruby/issues/7182
       JAVA_OPTS: -Djdk.io.File.enableADS=true
