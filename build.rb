@@ -11,13 +11,13 @@ end
 file = ".github/workflows/build.yml"
 lines = File.readlines(file)
 
-ruby_lines = lines.select { |line| line.include?('ruby: ') }
-raise unless ruby_lines.size == 2
+unix = lines.find { |line| line.include?('ruby: ') }
+windows = lines.find { |line| line.include?('jruby-version: ') }
+raise unless unix && windows
 
-unix, windows = ruby_lines
 unix.sub!(/ruby: .+/, "ruby: [#{engine_versions}]")
 if engine == 'jruby'
-  windows.sub!(/jruby-version: .+/, "jruby-version: #{version}, ruby: #{engine_version} }")
+  windows.sub!(/jruby-version: .+/, "jruby-version: #{version} }")
 end
 
 if_lines = lines.select { |line| line.match?(/^    if: (true|false)/) }

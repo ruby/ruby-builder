@@ -26,12 +26,20 @@ jobs:
         platform=${{ matrix.os }}
         platform=${platform/macos-*/macos-latest}
         echo "::set-output name=platform::$platform"
+    - name: Set ruby
+      id: ruby
+      run: |
+        ruby=${{ matrix.ruby }}
+        if [[ "$ruby" == [0-9]* ]]; then
+          ruby="ruby-$ruby"
+        fi
+        echo "::set-output name=ruby::$ruby"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
 
     - name: Set NO_DOCUMENT
       run: |
-        if [[ "${{ matrix.ruby }}" == ruby-1.9* ]]; then
+        if [[ "${{ steps.ruby.outputs.ruby }}" == ruby-1.9* ]]; then
           echo "NO_DOCUMENT=--no-ri --no-rdoc" >> $GITHUB_ENV
         else
           echo "NO_DOCUMENT=--no-document" >> $GITHUB_ENV
@@ -47,15 +55,15 @@ jobs:
 
       # Install packages
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev libgdbm-dev libreadline-dev libncurses5-dev
-      if: startsWith(matrix.os, 'ubuntu') && startsWith(matrix.ruby, 'ruby-')
+      if: startsWith(matrix.os, 'ubuntu') && startsWith(steps.ruby.outputs.ruby, 'ruby-')
 
     - name: Install system ruby for ruby-2.5.2
       run: sudo apt-get install -y --no-install-recommends ruby
-      if: startsWith(matrix.os, 'ubuntu') && matrix.ruby == 'ruby-2.5.2'
+      if: startsWith(matrix.os, 'ubuntu') && steps.ruby.outputs.ruby == 'ruby-2.5.2'
 
     - name: Set RUBY_BUILD_RUBY_NAME
       run: |
-        ruby="${{ matrix.ruby }}"
+        ruby="${{ steps.ruby.outputs.ruby }}"
         if [[ $ruby == ruby-* ]]; then
           echo "RUBY_BUILD_RUBY_NAME=${ruby#ruby-}" >> $GITHUB_ENV
         else
@@ -63,7 +71,7 @@ jobs:
         fi
     - name: Set PREFIX
       run: |
-        ruby="${{ matrix.ruby }}"
+        ruby="${{ steps.ruby.outputs.ruby }}"
         if [[ $ruby == ruby-* ]]; then
           # See https://github.com/ruby/setup-ruby/issues/98
           echo "PREFIX=$RUNNER_TOOL_CACHE/Ruby/${ruby#ruby-}/x64" >> $GITHUB_ENV
@@ -76,14 +84,14 @@ jobs:
     # See https://bugs.ruby-lang.org/issues/17777 for 2.6.7
     - name: Set warnflags for Ruby <= 2.2
       run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
-      if: startsWith(matrix.ruby, 'ruby-1.9') || startsWith(matrix.ruby, 'ruby-2.0') || startsWith(matrix.ruby, 'ruby-2.1') || startsWith(matrix.ruby, 'ruby-2.2') || matrix.ruby == 'ruby-2.6.7'
+      if: startsWith(steps.ruby.outputs.ruby, 'ruby-1.9') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.0') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.1') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.2') || steps.ruby.outputs.ruby == 'ruby-2.6.7'
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
       env:
         RUBY_CONFIGURE_OPTS: --enable-shared --disable-install-doc
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
@@ -108,8 +116,8 @@ jobs:
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_path: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_name: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_content_type: application/gzip
 
   buildJRubyWindows:
@@ -118,7 +126,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - { os: windows-2019, jruby-version: 9.2.21.0, ruby: jruby-9.2.21.0 }
+        - { os: windows-2019, jruby-version: 9.2.21.0 }
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -135,12 +143,17 @@ jobs:
         platform=${platform/windows-*/windows-latest}
         echo "::set-output name=platform::$platform"
       shell: bash
+    - name: Set ruby
+      id: ruby
+      run: |
+        ruby=jruby-${{ matrix.jruby-version }}
+        echo "::set-output name=ruby::$ruby"
     - name: Check if already built
-      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
+      run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
       shell: bash
 
     - name: Set PREFIX
-      run: echo "PREFIX=$HOME/.rubies/${{ matrix.ruby }}" >> $GITHUB_ENV
+      run: echo "PREFIX=$HOME/.rubies/${{ steps.ruby.outputs.ruby }}" >> $GITHUB_ENV
       shell: bash
     - run: curl --fail -L -O 'https://repo1.maven.org/maven2/org/jruby/jruby-dist/${{ matrix.jruby-version }}/jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz'
       shell: bash
@@ -155,7 +168,7 @@ jobs:
         # Create ruby.bat, so 'ruby' works in pwsh
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
     - name: Create archive
-      run: tar czf ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
       shell: bash
     - name: Install Bundler if needed
       shell: bash
@@ -165,7 +178,7 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "$Env:UserProfile\.rubies\${{ matrix.ruby }}\bin" >> $Env:GITHUB_PATH
+    - run: echo "$Env:UserProfile\.rubies\${{ steps.ruby.outputs.ruby }}\bin" >> $Env:GITHUB_PATH
     - run: echo $Env:PATH
 
     - run: ruby --version
@@ -195,8 +208,8 @@ jobs:
       with:
         # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
         upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_name: ${{ matrix.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_path: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
+        asset_name: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
         asset_content_type: application/gzip
 
   createPullRequest:
