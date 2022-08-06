@@ -6,7 +6,7 @@ on:
 jobs:
   # Build stable releases
   build:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
@@ -37,15 +37,8 @@ jobs:
           echo "NO_DOCUMENT=--no-document" >> $GITHUB_ENV
         fi
 
-    # Ruby <= 2.3 needs OpenSSL 1.0.2 which cannot be installed on Ubuntu 16.04 and macos.
-    # To workaround that, we use a branch of ruby-build which builds its own OpenSSL.
     - name: Clone ruby-build
-      run: |
-        if [[ "${{ matrix.ruby }}" == ruby-2.[0123]* || "${{ matrix.ruby }}" == ruby-1.9* ]]; then
-          git clone --branch ruby23-openssl-linux https://github.com/eregon/ruby-build.git
-        else
-          git clone https://github.com/rbenv/ruby-build.git
-        fi
+      run: git clone https://github.com/rbenv/ruby-build.git
     - name: Install ruby-build
       run: sudo ./ruby-build/install.sh
 
