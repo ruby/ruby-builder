@@ -148,6 +148,7 @@ jobs:
       run: |
         ruby=jruby-${{ matrix.jruby-version }}
         echo "::set-output name=ruby::$ruby"
+      shell: bash
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
       shell: bash
