@@ -202,6 +202,7 @@ jobs:
   createPullRequest:
     name: Create PR to setup-ruby
     needs: [build]
+    if: startsWith(github.event.head_commit.message, 'Build ')
     runs-on: ubuntu-latest
     steps:
     - name: Set version
