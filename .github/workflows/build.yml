@@ -127,8 +127,6 @@ jobs:
         include:
         - { os: windows-2019, jruby-version: 9.2.21.0, ruby: jruby-9.2.21.0 }
     runs-on: ${{ matrix.os }}
-    env: # https://github.com/jruby/jruby/issues/7182
-      JAVA_OPTS: -Djdk.io.File.enableADS=true
     steps:
     - uses: actions/checkout@v2
     - name: Set tag name
