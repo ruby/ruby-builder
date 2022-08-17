@@ -1,7 +1,7 @@
 name: Check for new Ruby releases in ruby-build
 on:
   schedule:
-  - cron: '0 19 * * *'
+  - cron: '0 7,19 * * *'
   workflow_dispatch:
 jobs:
   check_new_releases:
