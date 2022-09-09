@@ -221,8 +221,10 @@ jobs:
     steps:
     - name: Set version
       id: version
+      env:
+        COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       run: |
-        commit_message="${{ github.event.head_commit.message }}"
+        commit_message="$COMMIT_MESSAGE"
         if [[ "$commit_message" =~ ^Build\ * ]]; then
           last_version=${commit_message#* }
           echo "::set-output name=version::$last_version"
