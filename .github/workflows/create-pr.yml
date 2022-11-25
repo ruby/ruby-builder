@@ -1,9 +1,9 @@
-name: Create PR for a given version
+name: Create a PR for the given versions
 on:
   workflow_dispatch:
     inputs:
-      version:
-        description: 'engine-version like ruby-1.2.3'
+      versions:
+        description: 'engine-version like ruby-1.2.3, separated by comma'
         required: true
 jobs:
   createPullRequest:
@@ -12,6 +12,6 @@ jobs:
     steps:
     - uses: ruby/ruby-builder/.github/actions/create-pr-to-setup-ruby@master
       with:
-        version: ${{ github.event.inputs.version }}
-        title: Add ${{ github.event.inputs.version }}
+        versions: ${{ github.event.inputs.versions }}
+        title: Add ${{ github.event.inputs.versions }}
         token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}

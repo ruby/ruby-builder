@@ -44,9 +44,9 @@ engines_and_min_versions.each_pair { |engine, min_version|
 
   already_built = all_already_built.fetch(engine)
   new = releases - already_built
-  p new unless new.empty?
-  new.each { |version|
-    sh("ruby", "build.rb", engine, version)
-    sh("git", "push")
-  }
+  unless new.empty?
+    puts "New releases for #{engine}: #{new}"
+    sh("ruby", "build.rb", *new.map { |v| "#{engine}-#{v}" })
+    # sh("git", "push") # TODO
+  end
 }

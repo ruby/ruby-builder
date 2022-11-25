@@ -1,8 +1,8 @@
 name: Create PR to setup-ruby
-description: Create a Pull Request to ruby/setup-ruby adding the given version
+description: Create a Pull Request to ruby/setup-ruby adding the given versions
 inputs:
-  version:
-    description: 'engine-version like ruby-1.2.3'
+  versions:
+    description: 'engine-version like ruby-1.2.3, separated by comma'
     required: true
   token:
     description: 'GitHub token to create PR'
@@ -20,7 +20,7 @@ runs:
         fetch-depth: 0
         token: ${{ inputs.token }}
 
-    - run: ruby new-version.rb ${{ inputs.version }}
+    - run: ruby new-versions.rb ${{ inputs.versions }}
       shell: bash
     - run: ./pre-commit
       shell: bash
@@ -34,7 +34,7 @@ runs:
         title: ${{ inputs.title }}
         commit-message: ${{ inputs.title }}
         body: Automated PR from ruby/ruby-builder
-        branch: ${{ inputs.version }}
+        branch: ${{ inputs.versions }}
         delete-branch: true
         token: ${{ inputs.token }}
     - name: PR URL
