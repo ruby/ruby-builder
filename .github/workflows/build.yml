@@ -219,20 +219,20 @@ jobs:
     if: startsWith(github.event.head_commit.message, 'Build ')
     runs-on: ubuntu-latest
     steps:
-    - name: Set version
-      id: version
+    - name: Set versions
+      id: versions
       env:
         COMMIT_MESSAGE: ${{ github.event.head_commit.message }}
       run: |
         commit_message="$COMMIT_MESSAGE"
         if [[ "$commit_message" =~ ^Build\ * ]]; then
-          last_version=${commit_message#* }
-          echo "::set-output name=version::$last_version"
+          versions=${commit_message#* }
+          echo "::set-output name=versions::$versions"
         else
           exit 2
         fi
     - uses: ruby/ruby-builder/.github/actions/create-pr-to-setup-ruby@master
       with:
-        version: ${{ steps.version.outputs.version }}
-        title: Add ${{ steps.version.outputs.version }}
+        versions: ${{ steps.versions.outputs.versions }}
+        title: Add ${{ steps.versions.outputs.versions }}
         token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
