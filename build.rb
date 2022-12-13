@@ -21,14 +21,14 @@ windows = lines.find { |line| line.include?('jruby-version: ') }
 raise unless unix && windows
 
 unix.sub!(/ruby: .+/, "ruby: [#{engine_versions}]")
-if jruby == 'jruby'
-  windows.sub!(/jruby-version: .+/, "jruby-version: #{version} }")
+if jruby
+  windows.sub!(/jruby-version: .+/, "jruby-version: #{versions.map { |v| v.delete_prefix('jruby-') }}")
 end
 
 if_lines = lines.select { |line| line.match?(/^    if: (true|false)/) }
 raise unless if_lines.size == 2
 if_lines[0].sub!(/if: (true|false)/, 'if: true')
-if_lines[1].sub!(/if: (true|false)/, "if: #{jruby == 'jruby'}")
+if_lines[1].sub!(/if: (true|false)/, "if: #{jruby}")
 
 File.write(file, lines.join)
 
