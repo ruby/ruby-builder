@@ -28,6 +28,6 @@ jobs:
     - if: ${{ steps.diff.outcome == 'failure' }} # changed
       uses: ruby/ruby-builder/.github/actions/create-pr-to-setup-ruby@master
       with:
-        version: windows
+        versions: windows
         title: Update CRuby releases on Windows
         token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
