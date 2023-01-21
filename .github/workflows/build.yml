@@ -19,13 +19,13 @@ jobs:
       id: info
       run: |
         tag=toolcache
-        echo "::set-output name=tag::$tag"
+        echo "tag=$tag" >> $GITHUB_OUTPUT
     - name: Set platform
       id: platform
       run: |
         platform=${{ matrix.os }}
         platform=${platform/macos-*/macos-latest}
-        echo "::set-output name=platform::$platform"
+        echo "platform=$platform" >> $GITHUB_OUTPUT
     - name: Set ruby
       id: ruby
       run: |
@@ -33,7 +33,7 @@ jobs:
         if [[ "$ruby" == [0-9]* ]]; then
           ruby="ruby-$ruby"
         fi
-        echo "::set-output name=ruby::$ruby"
+        echo "ruby=$ruby" >> $GITHUB_OUTPUT
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
 
@@ -134,20 +134,20 @@ jobs:
       id: info
       run: |
         tag=toolcache
-        echo "::set-output name=tag::$tag"
+        echo "tag=$tag" >> $GITHUB_OUTPUT
       shell: bash
     - name: Set platform
       id: platform
       run: |
         platform=${{ matrix.os }}
         platform=${platform/windows-*/windows-latest}
-        echo "::set-output name=platform::$platform"
+        echo "platform=$platform" >> $GITHUB_OUTPUT
       shell: bash
     - name: Set ruby
       id: ruby
       run: |
         ruby=jruby-${{ matrix.jruby-version }}
-        echo "::set-output name=ruby::$ruby"
+        echo "ruby=$ruby" >> $GITHUB_OUTPUT
       shell: bash
     - name: Check if already built
       run: '! curl -s --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
@@ -227,7 +227,7 @@ jobs:
         commit_message="$COMMIT_MESSAGE"
         if [[ "$commit_message" =~ ^Build\ * ]]; then
           versions=${commit_message#* }
-          echo "::set-output name=versions::$versions"
+          echo "versions=$versions" >> $GITHUB_OUTPUT
         else
           exit 2
         fi
