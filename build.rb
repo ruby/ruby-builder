@@ -10,7 +10,6 @@ versions.dup.each do |engine_version|
     versions << "truffleruby+graalvm-#{version}"
   end
 end
-engine_versions = versions.join(', ')
 jruby = versions.any? { |v| v.start_with?('jruby-') }
 
 file = ".github/workflows/build.yml"
@@ -20,7 +19,7 @@ unix = lines.find { |line| line.include?('ruby: ') }
 windows = lines.find { |line| line.include?('jruby-version: ') }
 raise unless unix && windows
 
-unix.sub!(/ruby: .+/, "ruby: [#{engine_versions}]")
+unix.sub!(/ruby: .+/, "ruby: [#{versions.join(', ')}]")
 if jruby
   windows.sub!(/jruby-version: .+/, "jruby-version: #{versions.map { |v| v.delete_prefix('jruby-') }}")
 end
@@ -33,4 +32,4 @@ if_lines[1].sub!(/if: (true|false)/, "if: #{jruby}")
 File.write(file, lines.join)
 
 sh 'git', 'add', file
-sh 'git', 'commit', '-m', "Build #{engine_versions}"
+sh 'git', 'commit', '-m', "Build #{versions.join(',')}"
