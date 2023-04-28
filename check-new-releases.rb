@@ -40,6 +40,10 @@ engines_and_min_versions.each_pair { |engine, min_version|
     releases += versions.grep(/^\d+(\.\d+)+-(preview|rc)(\d+)$/).select { |version|
       Gem::Version.new(version) >= min_version_for_preview_rc
     }
+  elsif engine == 'truffleruby'
+    releases += versions.grep(/^\d+(\.\d+)+-preview(\d+)$/).select { |version|
+      Gem::Version.new(version) >= min_version
+    }
   end
 
   already_built = all_already_built.fetch(engine)
