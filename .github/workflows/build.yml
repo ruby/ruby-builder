@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-20.04, ubuntu-22.04, macos-11 ]
-        ruby: [jruby-9.4.3.0]
+        ruby: [truffleruby-23.0.0, truffleruby+graalvm-23.0.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v2
@@ -121,7 +121,7 @@ jobs:
         asset_content_type: application/gzip
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
