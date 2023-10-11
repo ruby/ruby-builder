@@ -110,15 +110,10 @@ jobs:
     - run: ruby test_subprocess.rb
 
     - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_name: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_content_type: application/gzip
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz"
 
   buildJRubyWindows:
     if: false
@@ -203,15 +198,11 @@ jobs:
       shell: bash
 
     - name: Upload Built Ruby
-      uses: actions/upload-release-asset@v1
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        # curl -s "https://api.github.com/repos/ruby/ruby-builder/releases/tags/$TAG" | jq -r .upload_url
-        upload_url: 'https://uploads.github.com/repos/ruby/ruby-builder/releases/33599578/assets{?name,label}'
-        asset_path: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_name: ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz
-        asset_content_type: application/gzip
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
+      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz"
+
 
   createPullRequest:
     name: Create PR to setup-ruby
