@@ -7,17 +7,17 @@ jobs:
   check_new_releases:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
       with:
         fetch-depth: 0
         token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
     - name: Clone setup-ruby
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: ruby/setup-ruby
         path: setup-ruby
     - name: Clone ruby-build
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: rbenv/ruby-build
         path: ruby-build

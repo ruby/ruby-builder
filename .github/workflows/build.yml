@@ -14,7 +14,7 @@ jobs:
         ruby: [truffleruby-23.1.0, truffleruby+graalvm-23.1.0]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set tag name
       id: info
       run: |
@@ -129,7 +129,7 @@ jobs:
         - { os: windows-2019, jruby-version: 9.3.11.0 }
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - name: Set tag name
       id: info
       run: |

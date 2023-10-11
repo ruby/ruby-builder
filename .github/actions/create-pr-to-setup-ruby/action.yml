@@ -14,7 +14,7 @@ runs:
   using: "composite"
   steps:
     - name: Clone setup-ruby
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         repository: ruby/setup-ruby
         fetch-depth: 0
