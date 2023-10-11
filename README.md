@@ -31,6 +31,7 @@ Archives are named `$engine-$version-$platform.tar.gz`.
 `platform` is one of:
 * `ubuntu-NN.NN`: built on the corresponding GitHub-hosted runner virtual environment
 * `macos-latest`: built on `macos-11` (the oldest `macos` available on GitHub-hosted runners)
+* `macos-13-arm64`: built on `macos-arm-oss`
 * `windows-latest`: built on `windows-2019` (does not matter, it's only for repacking a JRuby archive, no actual build)
 
 The names contain `-latest` for compatibility, even though what `-latest` points to for runners might have changed.

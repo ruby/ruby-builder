@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, ubuntu-22.04, macos-11 ]
-        ruby: [truffleruby-23.1.0, truffleruby+graalvm-23.1.0]
+        os: [ macos-arm-oss ]
+        ruby: [ruby-3.2.2]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -24,7 +24,8 @@ jobs:
       id: platform
       run: |
         platform=${{ matrix.os }}
-        platform=${platform/macos-*/macos-latest}
+        platform=${platform/macos-11/macos-latest}
+        platform=${platform/macos-arm-oss/macos-13-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
     - name: Set ruby
       id: ruby
@@ -74,7 +75,8 @@ jobs:
         ruby="${{ steps.ruby.outputs.ruby }}"
         if [[ $ruby == ruby-* ]]; then
           # See https://github.com/ruby/setup-ruby/issues/98
-          echo "PREFIX=$RUNNER_TOOL_CACHE/Ruby/${ruby#ruby-}/x64" >> $GITHUB_ENV
+          arch=$(node -e 'console.log(os.arch())')
+          echo "PREFIX=$RUNNER_TOOL_CACHE/Ruby/${ruby#ruby-}/$arch" >> $GITHUB_ENV
         else
           echo "PREFIX=$HOME/.rubies/$ruby" >> $GITHUB_ENV
         fi
