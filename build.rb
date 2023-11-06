@@ -21,8 +21,7 @@ raise unless unix && windows
 
 unix.sub!(/ruby: .+/, "ruby: [#{versions.join(', ')}]")
 if jruby
-  raise "More than 1 version not supported for JRuby" unless versions.size == 1
-  windows.sub!(/jruby-version: .+/, "jruby-version: #{versions.first.delete_prefix('jruby-')} }")
+  windows.sub!(/jruby-version: .+/, "jruby-version: [#{versions.map { |v| v.delete_prefix('jruby-') }.join(', ')}]")
 end
 
 if_lines = lines.select { |line| line.match?(/^    if: (true|false)/) }

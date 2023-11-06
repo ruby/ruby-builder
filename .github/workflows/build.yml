@@ -129,8 +129,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include:
-        - { os: windows-2019, jruby-version: 9.4.4.0 }
+        os: [ windows-2019 ]
+        jruby-version: [ 9.4.4.0 ]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
