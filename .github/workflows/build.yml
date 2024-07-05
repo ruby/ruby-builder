@@ -10,7 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-arm-oss ]
+        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-14 ]
         ruby: [jruby-9.4.8.0]
     runs-on: ${{ matrix.os }}
     steps:
@@ -25,7 +25,7 @@ jobs:
       run: |
         platform=${{ matrix.os }}
         platform=${platform/macos-12/macos-latest}
-        platform=${platform/macos-arm-oss/macos-13-arm64}
+        platform=${platform/macos-14/macos-13-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
     - name: Set ruby
       id: ruby
@@ -95,7 +95,7 @@ jobs:
     # https://github.com/rbenv/ruby-build/discussions/1961#discussioncomment-4031745
     - name: Override RUBY_CONFIGURE_OPTS if macos-arm64 ruby-3.1
       run: echo 'RUBY_CONFIGURE_OPTS=--disable-shared --disable-install-doc' >> $GITHUB_ENV
-      if: matrix.os == 'macos-arm-oss' && startsWith(steps.ruby.outputs.ruby, 'ruby-3.1')
+      if: matrix.os == 'macos-14' && startsWith(steps.ruby.outputs.ruby, 'ruby-3.1')
 
     - name: Build Ruby
       run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
