@@ -64,14 +64,6 @@ jobs:
       run: sudo apt-get install -y --no-install-recommends ruby
       if: startsWith(matrix.os, 'ubuntu') && steps.ruby.outputs.ruby == 'ruby-2.5.2'
 
-    - name: Set RUBY_BUILD_RUBY_NAME
-      run: |
-        ruby="${{ steps.ruby.outputs.ruby }}"
-        if [[ $ruby == ruby-* ]]; then
-          echo "RUBY_BUILD_RUBY_NAME=${ruby#ruby-}" >> $GITHUB_ENV
-        else
-          echo "RUBY_BUILD_RUBY_NAME=$ruby" >> $GITHUB_ENV
-        fi
     - name: Set PREFIX
       run: |
         ruby="${{ steps.ruby.outputs.ruby }}"
@@ -98,7 +90,7 @@ jobs:
       if: matrix.os == 'macos-14' && startsWith(steps.ruby.outputs.ruby, 'ruby-3.1')
 
     - name: Build Ruby
-      run: ruby-build --verbose $RUBY_BUILD_RUBY_NAME $PREFIX
+      run: ruby-build --verbose ${{ steps.ruby.outputs.ruby }} $PREFIX
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
     - name: Create archive
