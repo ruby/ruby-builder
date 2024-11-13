@@ -35,8 +35,9 @@ jobs:
           ruby="ruby-$ruby"
         fi
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
+        echo "archive=$ruby-${{ steps.platform.outputs.platform }}-fixed.tar.gz" >> $GITHUB_OUTPUT
     - name: Check if already built
-      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz'
+      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
 
     - name: Set NO_DOCUMENT
       run: |
@@ -95,7 +96,7 @@ jobs:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
         RUBY_BUILD_VENDOR_OPENSSL: "true"
     - name: Create archive
-      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ steps.ruby.outputs.archive }} -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
@@ -117,7 +118,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz"
+      run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
 
   buildJRubyWindows:
     if: false
@@ -147,9 +148,10 @@ jobs:
       run: |
         ruby=jruby-${{ matrix.jruby-version }}
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
+        echo "archive=$ruby-${{ steps.platform.outputs.platform }}.tar.gz" >> $GITHUB_OUTPUT
       shell: bash
     - name: Check if already built
-      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
+      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
       shell: bash
 
     - name: Set PREFIX
@@ -168,7 +170,7 @@ jobs:
         # Create ruby.bat, so 'ruby' works in pwsh
         echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
     - name: Create archive
-      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ steps.ruby.outputs.archive }} -C $(dirname $PREFIX) $(basename $PREFIX)
       shell: bash
     - name: Install Bundler if needed
       shell: bash
@@ -205,7 +207,7 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz"
+      run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
 
 
   createPullRequest:
