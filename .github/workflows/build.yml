@@ -106,6 +106,7 @@ jobs:
     - run: echo "$PREFIX/bin" >> $GITHUB_PATH
     - run: ruby --version
     - run: ruby -ropen-uri -e 'puts URI.send(:open, %{https://rubygems.org/}) { |f| f.read(1024) }'
+    - run: otool -L $(ruby -ropenssl -e 'puts $".grep(/openssl\.(so|bundle)/)') | grep libssl
     - name: Install JSON gem
       run: gem install json -v '2.2.0' $NO_DOCUMENT
     - run: bundle --version
