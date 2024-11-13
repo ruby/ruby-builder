@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-14 ]
-        ruby: [jruby-9.4.9.0]
+        os: [ macos-12, macos-14 ]
+        ruby: [ruby-3.0.7]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -36,7 +36,7 @@ jobs:
         fi
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
     - name: Check if already built
-      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz'
+      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz'
 
     - name: Set NO_DOCUMENT
       run: |
@@ -93,8 +93,9 @@ jobs:
       run: ruby-build --verbose ${{ steps.ruby.outputs.ruby }} $PREFIX
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
+        RUBY_BUILD_VENDOR_OPENSSL: "true"
     - name: Create archive
-      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
+      run: tar czf ${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
       run: |
         if [ ! -e $PREFIX/bin/bundle ]; then
@@ -116,10 +117,10 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}.tar.gz"
+      run: gh release upload "toolcache" "${{ steps.ruby.outputs.ruby }}-${{ steps.platform.outputs.platform }}-fixed.tar.gz"
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
