@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ macos-12, macos-14 ]
-        ruby: [truffleruby-23.1.0, truffleruby-23.1.1, truffleruby-23.1.2, truffleruby-24.0.0, truffleruby-24.0.1, truffleruby-24.0.2, truffleruby-24.1.0, truffleruby-24.1.1, truffleruby+graalvm-23.1.0, truffleruby+graalvm-23.1.1, truffleruby+graalvm-23.1.2, truffleruby+graalvm-24.0.0, truffleruby+graalvm-24.0.1, truffleruby+graalvm-24.0.2, truffleruby+graalvm-24.1.0, truffleruby+graalvm-24.1.1]
+        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-12, macos-14 ]
+        ruby: [jruby-9.4.9.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -35,7 +35,7 @@ jobs:
           ruby="ruby-$ruby"
         fi
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
-        echo "archive=$ruby-${{ steps.platform.outputs.platform }}-fixed.tar.gz" >> $GITHUB_OUTPUT
+        echo "archive=$ruby-${{ steps.platform.outputs.platform }}.tar.gz" >> $GITHUB_OUTPUT
     - name: Check if already built
       run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
 
@@ -90,13 +90,10 @@ jobs:
       run: echo 'RUBY_CONFIGURE_OPTS=--disable-shared --disable-install-doc' >> $GITHUB_ENV
       if: matrix.os == 'macos-14' && startsWith(steps.ruby.outputs.ruby, 'ruby-3.1')
 
-    - run: echo "OPENSSL_PREFIX=$(brew --prefix openssl@3)" >> $GITHUB_ENV
-      if: startsWith(matrix.os, 'macos')
     - name: Build Ruby
       run: ruby-build --verbose ${{ steps.ruby.outputs.ruby }} $PREFIX
       env:
         CPPFLAGS: "-DENABLE_PATH_CHECK=0" # https://github.com/actions/virtual-environments/issues/267
-        RUBY_BUILD_VENDOR_OPENSSL: "true"
     - name: Create archive
       run: tar czf ${{ steps.ruby.outputs.archive }} -C $(dirname $PREFIX) $(basename $PREFIX)
     - name: Install Bundler if needed
@@ -123,7 +120,7 @@ jobs:
       run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
 
   buildJRubyWindows:
-    if: false
+    if: true
     strategy:
       fail-fast: false
       matrix:
