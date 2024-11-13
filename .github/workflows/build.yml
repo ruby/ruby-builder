@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ macos-12, macos-14 ]
-        ruby: [ruby-3.0.0-preview1, ruby-3.0.0-preview2, ruby-3.0.0-rc1, ruby-3.0.0, ruby-3.0.1, ruby-3.0.2, ruby-3.0.3, ruby-3.0.4, ruby-3.0.5, ruby-3.0.6, ruby-3.0.7]
+        ruby: [truffleruby-23.1.0, truffleruby-23.1.1, truffleruby-23.1.2, truffleruby-24.0.0, truffleruby-24.0.1, truffleruby-24.0.2, truffleruby-24.1.0, truffleruby-24.1.1, truffleruby+graalvm-23.1.0, truffleruby+graalvm-23.1.1, truffleruby+graalvm-23.1.2, truffleruby+graalvm-24.0.0, truffleruby+graalvm-24.0.1, truffleruby+graalvm-24.0.2, truffleruby+graalvm-24.1.0, truffleruby+graalvm-24.1.1]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -90,6 +90,8 @@ jobs:
       run: echo 'RUBY_CONFIGURE_OPTS=--disable-shared --disable-install-doc' >> $GITHUB_ENV
       if: matrix.os == 'macos-14' && startsWith(steps.ruby.outputs.ruby, 'ruby-3.1')
 
+    - run: echo "OPENSSL_PREFIX=$(brew --prefix openssl@3)" >> $GITHUB_ENV
+      if: startsWith(matrix.os, 'macos')
     - name: Build Ruby
       run: ruby-build --verbose ${{ steps.ruby.outputs.ruby }} $PREFIX
       env:
