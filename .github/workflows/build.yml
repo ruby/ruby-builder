@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-20.04, ubuntu-22.04, ubuntu-24.04, macos-13, macos-14 ]
-        ruby: [ruby-3.3.7]
+        os: [ ubuntu-22.04-arm, ubuntu-24.04-arm ]
+        ruby: [ruby-3.4.0, ruby-3.4.1]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -26,6 +26,7 @@ jobs:
         platform=${{ matrix.os }}
         platform=${platform/macos-13/macos-latest}
         platform=${platform/macos-14/macos-13-arm64}
+        platform=${platform/%-arm/-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
     - name: Set ruby
       id: ruby
