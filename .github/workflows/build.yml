@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-22.04-arm, ubuntu-24.04-arm ]
-        ruby: [truffleruby+graalvm-23.0.0, truffleruby+graalvm-23.1.0, truffleruby+graalvm-23.1.1, truffleruby+graalvm-23.1.2, truffleruby+graalvm-24.0.0, truffleruby+graalvm-24.0.1, truffleruby+graalvm-24.0.2, truffleruby+graalvm-24.1.0, truffleruby+graalvm-24.1.1]
+        ruby: [jruby-9.3.15.0, jruby-9.4.0.0, jruby-9.4.1.0, jruby-9.4.2.0, jruby-9.4.3.0, jruby-9.4.4.0, jruby-9.4.5.0, jruby-9.4.6.0, jruby-9.4.7.0, jruby-9.4.8.0, jruby-9.4.9.0]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
