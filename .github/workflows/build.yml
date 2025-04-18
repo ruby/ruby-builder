@@ -61,6 +61,8 @@ jobs:
       if: startsWith(matrix.os, 'ubuntu') && startsWith(steps.ruby.outputs.ruby, 'ruby-')
     - run: sudo apt-get install -y --no-install-recommends libyaml-dev
       if: startsWith(matrix.os, 'ubuntu') && startsWith(steps.ruby.outputs.ruby, 'truffleruby')
+    - run: echo "JAVA_HOME=${JAVA_HOME_21_X64:-${JAVA_HOME_21_arm64:-}}" >> "$GITHUB_ENV"
+      if: startsWith(steps.ruby.outputs.ruby, 'jruby-')
 
     - name: Install system ruby for ruby-2.5.2
       run: sudo apt-get install -y --no-install-recommends ruby
@@ -152,6 +154,9 @@ jobs:
       shell: bash
     - name: Check if already built
       run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
+      shell: bash
+
+    - run: echo "JAVA_HOME=${JAVA_HOME_21_X64:-${JAVA_HOME_21_arm64:-}}" >> "$GITHUB_ENV"
       shell: bash
 
     - name: Set PREFIX
