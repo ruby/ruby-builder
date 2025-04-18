@@ -142,7 +142,8 @@ jobs:
       id: platform
       run: |
         platform=${{ matrix.os }}
-        platform=${platform/windows-*/windows-latest}
+        platform=${platform/windows-2019/windows-latest}
+        platform=${platform/windows-11-arm/windows-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
       shell: bash
     - name: Set ruby
