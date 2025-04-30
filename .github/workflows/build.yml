@@ -11,7 +11,7 @@ jobs:
       fail-fast: false
       matrix:
         os: [ ubuntu-22.04, ubuntu-24.04, ubuntu-22.04-arm, ubuntu-24.04-arm, macos-13, macos-14 ]
-        ruby: [jruby-10.0.0.0]
+        ruby: [truffleruby-24.2.1, truffleruby+graalvm-24.2.1]
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
@@ -123,7 +123,7 @@ jobs:
       run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
 
   buildJRubyWindows:
-    if: true
+    if: false
     strategy:
       fail-fast: false
       matrix:
