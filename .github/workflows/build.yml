@@ -170,11 +170,7 @@ jobs:
       run: |
         mkdir $(dirname $PREFIX)
         tar xf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz -C $(dirname $PREFIX)
-        cd $PREFIX/bin
-        # Copy bash launcher, so 'ruby' works in bash
-        cp jruby ruby
-        # Create ruby.bat, so 'ruby' works in pwsh
-        echo -en "@ECHO OFF\r\n@\"%~dp0jruby.exe\" %*\r\n" > ruby.bat
+        ls -l $PREFIX/bin
     - name: Create archive
       run: tar czf ${{ steps.ruby.outputs.archive }} -C $(dirname $PREFIX) $(basename $PREFIX)
       shell: bash
