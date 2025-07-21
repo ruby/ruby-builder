@@ -182,7 +182,7 @@ jobs:
           gem install bundler -v '~> 1' --no-document
         fi
 
-    - run: echo "$Env:UserProfile\.rubies\${{ steps.ruby.outputs.ruby }}\bin" >> $Env:GITHUB_PATH
+    - run: echo "$pwd\jruby-${{ matrix.jruby-version }}\bin" >> $Env:GITHUB_PATH
     - run: echo $Env:PATH
 
     - run: ruby --version
