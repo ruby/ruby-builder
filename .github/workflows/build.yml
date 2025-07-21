@@ -173,6 +173,7 @@ jobs:
       shell: bash
       run: |
         mkdir $(dirname $PREFIX)
+        ls -l jruby-${{ matrix.jruby-version }}/bin
         mv jruby-${{ matrix.jruby-version }} $(dirname $PREFIX)
         ls -l $PREFIX/bin
     - name: Create archive
