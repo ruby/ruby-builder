@@ -169,6 +169,7 @@ jobs:
       shell: bash
       run: |
         mkdir $(dirname $PREFIX)
+        tar tf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz
         tar xf jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz -C $(dirname $PREFIX)
         ls -l $PREFIX/bin
     - name: Create archive
