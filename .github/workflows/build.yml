@@ -127,7 +127,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ windows-2022 ]
+        os: [ windows-2022, windows-11-arm ]
         jruby-version: [10.0.2.0]
     runs-on: ${{ matrix.os }}
     steps:
@@ -157,7 +157,10 @@ jobs:
       run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
       shell: bash
 
-    - run: echo "JAVA_HOME=${JAVA_HOME_21_X64:-${JAVA_HOME_21_arm64:-}}" >> "$GITHUB_ENV"
+    # JAVA_HOME_21_AARCH64 - https://github.com/actions/partner-runner-images/blob/main/images/arm-windows-11-image.md#java
+    # JAVA_HOME_21_arm64 - https://github.com/actions/runner-images/blob/main/images/macos/macos-15-arm64-Readme.md#java
+    # JAVA_HOME_21_X64 - https://github.com/actions/runner-images/blob/main/images/ubuntu/Ubuntu2404-Readme.md#java
+    - run: echo "JAVA_HOME=${JAVA_HOME_21_AARCH64:-${JAVA_HOME_21_arm64:-${JAVA_HOME_21_X64:-}}}" >> "$GITHUB_ENV"
       shell: bash
 
     - run: curl --fail -L -O 'https://repo1.maven.org/maven2/org/jruby/jruby-dist/${{ matrix.jruby-version }}/jruby-dist-${{ matrix.jruby-version }}-bin.tar.gz'
