@@ -32,4 +32,4 @@ if_lines[1].sub!(/if: (true|false)/, "if: #{jruby}")
 File.write(file, lines.join)
 
 sh 'git', 'add', file
-sh 'git', 'commit', '-m', "Build #{versions.join(',')}"
+system 'git', 'commit', '-m', "Build #{versions.join(',')}"
