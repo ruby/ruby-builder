@@ -24,6 +24,8 @@ This needs to be done 2 weeks prior to using the release.
 
 Once it's ready, mark the release as non-prerelease and switch to it in `ruby/setup-ruby`.
 
+See [this issue](https://github.com/ruby/setup-ruby/issues/98) for more details.
+
 ## Naming
 
 Archives are named `$engine-$version-$platform.tar.gz`.
