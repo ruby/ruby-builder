@@ -9,7 +9,7 @@ jobs:
     - uses: ruby/setup-ruby@v1
       with:
         ruby-version: '3.4'
-    - run: ruby copy_to_separate_releases.rb
+    - run: ruby copy_to_separate_releases.rb ''
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
