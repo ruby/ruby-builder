@@ -15,18 +15,14 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - name: Set tag name
-      id: info
-      run: |
-        tag=toolcache
-        echo "tag=$tag" >> $GITHUB_OUTPUT
     - name: Set platform
       id: platform
       run: |
         platform=${{ matrix.os }}
-        platform=${platform/macos-13/macos-latest}
-        platform=${platform/macos-14/macos-13-arm64}
-        platform=${platform/%-arm/-arm64}
+        platform=${platform/macos-13/darwin-x64}
+        platform=${platform/macos-14/darwin-arm64}
+        platform=${platform/%.04/.04-x64}
+        platform=${platform/%.04-arm/.04-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
     - name: Set ruby
       id: ruby
@@ -36,9 +32,10 @@ jobs:
           ruby="ruby-$ruby"
         fi
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
+        echo "tag=$ruby" >> $GITHUB_OUTPUT
         echo "archive=$ruby-${{ steps.platform.outputs.platform }}.tar.gz" >> $GITHUB_OUTPUT
     - name: Check if already built
-      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
+      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.ruby.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
 
     - name: Set NO_DOCUMENT
       run: |
@@ -120,7 +117,9 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
+      run: |
+        gh release view "${{ steps.ruby.outputs.tag }}" || gh release create "${{ steps.ruby.outputs.tag }}" --notes "Builds of ${{ steps.ruby.outputs.ruby }}"
+        gh release upload "${{ steps.ruby.outputs.tag }}" "${{ steps.ruby.outputs.archive }}"
 
   buildJRubyWindows:
     if: false
@@ -132,17 +131,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v4
-    - name: Set tag name
-      id: info
-      run: |
-        tag=toolcache
-        echo "tag=$tag" >> $GITHUB_OUTPUT
-      shell: bash
     - name: Set platform
       id: platform
       run: |
         platform=${{ matrix.os }}
-        platform=${platform/windows-2022/windows-latest}
+        platform=${platform/windows-2022/windows-x64}
         platform=${platform/windows-11-arm/windows-arm64}
         echo "platform=$platform" >> $GITHUB_OUTPUT
       shell: bash
@@ -151,10 +144,11 @@ jobs:
       run: |
         ruby=jruby-${{ matrix.jruby-version }}
         echo "ruby=$ruby" >> $GITHUB_OUTPUT
+        echo "tag=$ruby" >> $GITHUB_OUTPUT
         echo "archive=$ruby-${{ steps.platform.outputs.platform }}.tar.gz" >> $GITHUB_OUTPUT
       shell: bash
     - name: Check if already built
-      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.info.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
+      run: '! curl -s -L --head --fail https://github.com/ruby/ruby-builder/releases/download/${{ steps.ruby.outputs.tag }}/${{ steps.ruby.outputs.archive }}'
       shell: bash
 
     # JAVA_HOME_21_AARCH64 - https://github.com/actions/partner-runner-images/blob/main/images/arm-windows-11-image.md#java
@@ -212,7 +206,9 @@ jobs:
       env:
         GH_TOKEN: ${{ github.token }}
         GH_REPO: ${{ github.repository }}
-      run: gh release upload "toolcache" "${{ steps.ruby.outputs.archive }}"
+      run: |
+        gh release view "${{ steps.ruby.outputs.tag }}" || gh release create "${{ steps.ruby.outputs.tag }}" --notes "Builds of ${{ steps.ruby.outputs.ruby }}"
+        gh release upload "${{ steps.ruby.outputs.tag }}" "${{ steps.ruby.outputs.archive }}"
 
 
   createPullRequest:
