@@ -1,0 +1,15 @@
+name: Copy assets to separate releases
+on:
+  workflow_dispatch:
+jobs:
+  copy:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: '3.4'
+    - run: ruby copy_to_separate_releases.rb
+      env:
+        GH_TOKEN: ${{ github.token }}
+        GH_REPO: ${{ github.repository }}
