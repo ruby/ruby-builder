@@ -35,3 +35,6 @@ Archives are named `$engine-$version-$platform.tar.gz`.
 * `darwin-$arch`: built on the oldest macOS GitHub-hosted runner for that arch
 * `ubuntu-NN.NN-$arch`: built on the corresponding GitHub-hosted runner
 * `windows-$arch`: built on the oldest Windows GitHub-hosted runner for that arch
+
+Additionally for TruffleRuby there is also:
+* `linux-$arch`: built that should work on any recent-enough Linux
