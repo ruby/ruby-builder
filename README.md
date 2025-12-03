@@ -37,4 +37,4 @@ Archives are named `$engine-$version-$platform.tar.gz`.
 * `windows-$arch`: built on the oldest Windows GitHub-hosted runner for that arch
 
 Additionally for TruffleRuby there is also:
-* `linux-$arch`: built that should work on any recent-enough Linux
+* `linux-$arch`: build that should work on any recent-enough Linux
