@@ -3,6 +3,9 @@ on:
   schedule:
   - cron: '0 7,19 * * *'
   workflow_dispatch:
+permissions:
+  contents: write # for pushing to master
+
 jobs:
   check_new_releases:
     runs-on: ubuntu-latest
@@ -10,7 +13,6 @@ jobs:
     - uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
     - name: Clone setup-ruby
       uses: actions/checkout@v4
       with:
