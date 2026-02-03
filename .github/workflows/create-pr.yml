@@ -14,4 +14,4 @@ jobs:
       with:
         versions: ${{ github.event.inputs.versions }}
         title: Add ${{ github.event.inputs.versions }}
-        token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+        token: ${{ secrets.PR_FROM_RUBY_BUILDER_TOKEN }}

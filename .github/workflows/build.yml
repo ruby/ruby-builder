@@ -233,4 +233,4 @@ jobs:
       with:
         versions: ${{ steps.versions.outputs.versions }}
         title: Add ${{ steps.versions.outputs.versions }}
-        token: ${{ secrets.CHECK_NEW_RELEASES_TOKEN }}
+        token: ${{ secrets.PR_FROM_RUBY_BUILDER_TOKEN }}
