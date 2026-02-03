@@ -5,6 +5,7 @@ on:
   workflow_dispatch:
 permissions:
   contents: write # for pushing to master
+  actions: write # for changing .github/workflows/build.yml
 
 jobs:
   check_new_releases:
