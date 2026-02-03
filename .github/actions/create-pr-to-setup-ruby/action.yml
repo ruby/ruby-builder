@@ -33,7 +33,11 @@ runs:
         committer: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
         title: ${{ inputs.title }}
         commit-message: ${{ inputs.title }}
-        body: Automated PR from ruby/ruby-builder
+        body: |
+          Automated PR from ruby/ruby-builder.
+
+          @eregon @MSP-Greg @ntkme @flavorjones @larskanis @headius Please merge this PR if the diff is correct.
+          And then release setup-ruby by [running the release workflow](https://github.com/ruby/setup-ruby/actions/workflows/release.yml).
         branch: ${{ inputs.versions }}
         delete-branch: true
         token: ${{ inputs.token }}
