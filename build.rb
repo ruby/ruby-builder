@@ -1,30 +1,35 @@
-raise unless ARGV.size == 2
-engine, version = ARGV
-engine_version = "#{engine}-#{version}"
-
 def sh(*command)
   puts command.join(' ')
   raise "#{command} failed" unless system(*command)
 end
 
+versions = ARGV.dup
+versions.dup.each do |engine_version|
+  engine, version = engine_version.split('-', 2)
+  if engine == 'truffleruby'
+    versions << "truffleruby+graalvm-#{version}"
+  end
+end
+jruby = versions.any? { |v| v.start_with?('jruby-') }
+
 file = ".github/workflows/build.yml"
 lines = File.readlines(file)
 
-ruby_lines = lines.select { |line| line.include?('ruby: ') }
-raise unless ruby_lines.size == 2
+unix = lines.find { |line| line.include?('ruby: ') }
+windows = lines.find { |line| line.include?('jruby-version: ') }
+raise unless unix && windows
 
-unix, windows = ruby_lines
-unix.sub!(/ruby: .+/, "ruby: [#{engine_version}]")
-if engine == 'jruby'
-  windows.sub!(/jruby-version: .+/, "jruby-version: #{version}, ruby: #{engine_version} }")
+unix.sub!(/ruby: .+/, "ruby: [#{versions.join(', ')}]")
+if jruby
+  windows.sub!(/jruby-version: .+/, "jruby-version: [#{versions.map { |v| v.delete_prefix('jruby-') }.join(', ')}]")
 end
 
 if_lines = lines.select { |line| line.match?(/^    if: (true|false)/) }
 raise unless if_lines.size == 2
 if_lines[0].sub!(/if: (true|false)/, 'if: true')
-if_lines[1].sub!(/if: (true|false)/, "if: #{engine == 'jruby'}")
+if_lines[1].sub!(/if: (true|false)/, "if: #{jruby}")
 
 File.write(file, lines.join)
 
 sh 'git', 'add', file
-sh 'git', 'commit', '-m', "Build #{engine_version}"
+system 'git', 'commit', '-m', "Build #{versions.join(',')}"

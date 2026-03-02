@@ -6,6 +6,8 @@ engines_and_min_versions = {
   'truffleruby' => Gem::Version.new('21.0.0'),
 }
 
+min_version_for_preview_rc = Gem::Version.new('3.0.0.a')
+
 def sh(*command)
   puts command.join(' ')
   raise "#{command} failed" unless system(*command)
@@ -30,14 +32,25 @@ all_versions.each { |version|
 all_already_built = JSON.load(File.read('setup-ruby/ruby-builder-versions.json'))
 
 engines_and_min_versions.each_pair { |engine, min_version|
-  releases = all_versions_per_engine.fetch(engine)
-  releases = releases.grep(/^\d+(\.\d+)+$/).select { |version|
+  versions = all_versions_per_engine.fetch(engine)
+  releases = versions.grep(/^\d+(\.\d+)+$/).select { |version|
     Gem::Version.new(version) >= min_version
   }
+  if engine == 'ruby'
+    releases += versions.grep(/^\d+(\.\d+)+-(preview|rc)(\d+)$/).select { |version|
+      Gem::Version.new(version) >= min_version_for_preview_rc
+    }
+  elsif engine == 'truffleruby'
+    releases += versions.grep(/^\d+(\.\d+)+-preview(\d+)$/).select { |version|
+      Gem::Version.new(version) >= min_version
+    }
+  end
+
   already_built = all_already_built.fetch(engine)
   new = releases - already_built
-  new.each { |version|
-    sh("ruby", "build.rb", engine, version)
+  unless new.empty?
+    puts "New releases for #{engine}: #{new}"
+    sh("ruby", "build.rb", *new.map { |v| "#{engine}-#{v}" })
     sh("git", "push")
-  }
+  end
 }

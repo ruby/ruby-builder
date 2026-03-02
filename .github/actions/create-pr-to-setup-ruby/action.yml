@@ -1,0 +1,46 @@
+name: Create PR to setup-ruby
+description: Create a Pull Request to ruby/setup-ruby adding the given versions
+inputs:
+  versions:
+    description: 'engine-version like ruby-1.2.3, separated by comma'
+    required: true
+  token:
+    description: 'GitHub token to create PR'
+    required: true
+  title:
+    description: 'Used for the PR title and commit message'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - name: Clone setup-ruby
+      uses: actions/checkout@v4
+      with:
+        repository: ruby/setup-ruby
+        fetch-depth: 0
+        token: ${{ inputs.token }}
+
+    - run: ruby new-versions.rb ${{ inputs.versions }}
+      shell: bash
+    - run: ./pre-commit
+      shell: bash
+
+    - uses: peter-evans/create-pull-request@v3
+      id: pr
+      with:
+        push-to-fork: ruby-builder-bot/setup-ruby
+        author: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+        committer: ruby-builder-bot <98265520+ruby-builder-bot@users.noreply.github.com>
+        title: ${{ inputs.title }}
+        commit-message: ${{ inputs.title }}
+        body: |
+          Automated PR from ruby/ruby-builder.
+
+          @eregon @MSP-Greg @ntkme @flavorjones @larskanis @headius Please merge this PR if the diff is correct.
+          And then release setup-ruby by [running the release workflow](https://github.com/ruby/setup-ruby/actions/workflows/release.yml).
+        branch: ${{ inputs.versions }}
+        delete-branch: true
+        token: ${{ inputs.token }}
+    - name: PR URL
+      run: echo "${{ steps.pr.outputs.pull-request-url }}"
+      shell: bash

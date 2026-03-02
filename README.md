@@ -6,7 +6,7 @@ The action to use these prebuilt rubies is [ruby/setup-ruby](https://github.com/
 
 Please report issues to [ruby/setup-ruby](https://github.com/ruby/setup-ruby).
 
-[The latest release](https://github.com/ruby/ruby-builder/releases/latest) contains all built Rubies.
+There is one release per `$engine-$version` holding the corresponding built Rubies for the various platforms.
 
 ## Building a new Ruby release
 
@@ -24,13 +24,17 @@ This needs to be done 2 weeks prior to using the release.
 
 Once it's ready, mark the release as non-prerelease and switch to it in `ruby/setup-ruby`.
 
+See [this issue](https://github.com/ruby/setup-ruby/issues/98) for more details.
+
 ## Naming
 
 Archives are named `$engine-$version-$platform.tar.gz`.
+`$arch` is either `x64` or `arm64`
 
 `platform` is one of:
-* `ubuntu-NN.NN`: built on the corresponding GitHub-hosted runner virtual environment
-* `macos-latest`: built on `macos-10.15` (the oldest `macos` available on GitHub-hosted runners)
-* `windows-latest`: built on `windows-2019` (does not matter, it's only for repacking a JRuby archive, no actual build)
+* `darwin-$arch`: built on the oldest macOS GitHub-hosted runner for that arch
+* `ubuntu-NN.NN-$arch`: built on the corresponding GitHub-hosted runner
+* `windows-$arch`: built on the oldest Windows GitHub-hosted runner for that arch
 
-The names contain `-latest` for compatibility, even though what `-latest` points to for runners might have changed.
+Additionally for TruffleRuby there is also:
+* `linux-$arch`: build that should work on any recent-enough Linux
