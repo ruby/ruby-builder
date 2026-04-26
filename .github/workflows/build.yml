@@ -14,7 +14,7 @@ jobs:
         ruby: [truffleruby-34.0.1, truffleruby+graalvm-34.0.1]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Set platform
       id: platform
       run: |
@@ -130,7 +130,7 @@ jobs:
         jruby-version: [10.1.0.0]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v4
+    - uses: actions/checkout@v6
     - name: Set platform
       id: platform
       run: |
