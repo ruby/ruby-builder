@@ -16,6 +16,8 @@ PLATFORM_MAPPING = {
   'ubuntu-22.04-arm64' => 'ubuntu-22.04-arm64',
   'ubuntu-24.04'       => 'ubuntu-24.04-x64',
   'ubuntu-24.04-arm64' => 'ubuntu-24.04-arm64',
+  'ubuntu-26.04'       => 'ubuntu-26.04-x64',
+  'ubuntu-26.04-arm64' => 'ubuntu-26.04-arm64',
   'windows-latest'     => 'windows-x64',
   'windows-arm64'      => 'windows-arm64',
 }
