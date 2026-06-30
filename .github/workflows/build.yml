@@ -14,7 +14,7 @@ jobs:
         ruby: [ruby-3.4.10]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set platform
       id: platform
       run: |
@@ -130,7 +130,7 @@ jobs:
         jruby-version: [10.0.6.0]
     runs-on: ${{ matrix.os }}
     steps:
-    - uses: actions/checkout@v6
+    - uses: actions/checkout@v7
     - name: Set platform
       id: platform
       run: |
