@@ -83,6 +83,20 @@ jobs:
       run: echo "warnflags=-Wno-error=implicit-function-declaration" >> $GITHUB_ENV
       if: startsWith(steps.ruby.outputs.ruby, 'ruby-1.9') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.0') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.1') || startsWith(steps.ruby.outputs.ruby, 'ruby-2.2') || steps.ruby.outputs.ruby == 'ruby-2.6.7'
 
+    # GCC 15 on ubuntu-26.04 defaults to C23, where `()` means `(void)`, and since GCC 14 implicit declarations are errors
+    # The flags go on CC because CFLAGS would replace Ruby's default optflags, and 2.6 checks its MJIT header with a bare $(CC)
+    - name: Set CC for Ruby < 3.2 on ubuntu-26.04
+      run: |
+        case "${{ steps.ruby.outputs.ruby }}" in
+          ruby-1.9.*)
+            # _FORTIFY_SOURCE=3 aborts miniruby, and ext/bigdecimal races under parallel make
+            echo "CC=gcc -std=gnu17 -fpermissive -U_FORTIFY_SOURCE" >> $GITHUB_ENV
+            echo "MAKE_OPTS=-j1" >> $GITHUB_ENV ;;
+          ruby-2.[012].*) echo "CC=gcc -std=gnu17 -fpermissive" >> $GITHUB_ENV ;;
+          ruby-2.*|ruby-3.[01].*) echo "CC=gcc -std=gnu17" >> $GITHUB_ENV ;;
+        esac
+      if: startsWith(matrix.os, 'ubuntu-26.04')
+
     - name: Set RUBY_CONFIGURE_OPTS
       run: echo 'RUBY_CONFIGURE_OPTS=--enable-shared --disable-install-doc' >> $GITHUB_ENV
     # https://github.com/rbenv/ruby-build/discussions/1961#discussioncomment-4031745
