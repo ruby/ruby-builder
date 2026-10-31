@@ -10,8 +10,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ ubuntu-26.04, ubuntu-26.04-arm ]
-        ruby: [ruby-2.7.8]
+        os: [ ubuntu-22.04, ubuntu-24.04, ubuntu-26.04, ubuntu-22.04-arm, ubuntu-24.04-arm, ubuntu-26.04-arm, macos-15-intel, macos-15 ]
+        ruby: []
     runs-on: ${{ matrix.os }}
     steps:
     - uses: actions/checkout@v6
